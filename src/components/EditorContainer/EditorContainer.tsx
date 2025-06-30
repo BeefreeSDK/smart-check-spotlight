@@ -27,8 +27,8 @@ const EditorContainer = () => {
     if (!templateSlug) {
       router.replace('?template=empty')
     } else {
-      void clientAxiosInstance.get<IEntityContentJson>(`api/editor/templates/${templateSlug}`).then((response) => {
-          setLocalJson(response.data)
+      void clientAxiosInstance.get(`api/editor/templates/${templateSlug}`).then((response) => {
+          setLocalJson(response.data.json_data)
           setIsBootstrapped(true)
       })
     }
