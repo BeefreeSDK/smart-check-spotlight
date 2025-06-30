@@ -1,0 +1,82 @@
+.HeaderEditor {
+  color: var(--black);
+  background-color: var(--white);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  border-bottom: var(--space-025) solid var(--neutral-gray-200);
+  min-width: var(--space-260);
+  @media screen and (max-width: 1024px){
+    display: none;
+  }
+  .LeftBlock, .CenterBlock, .RightBlock {
+    font-size: 0.93rem;
+    align-items: center;
+    display: flex;
+  }
+  .LeftBlock {
+    .Back {
+      padding-right: var(--space-6);
+    }
+    .Preview {
+      align-items: center;
+      display: flex;
+      height: var(--space-7);
+      cursor: pointer;
+      padding: 0 var(--space-4);
+      border-left: var(--space-025) solid var(--neutral-gray-200);
+      path {
+        fill: var(--gray-500);
+      }
+    }
+    .SendTest {
+      display: flex;
+      align-items: center;
+      height: var(--space-7);
+      cursor: pointer;
+      color: var(--cold-gray-500);
+      padding: 0 var(--space-4);
+      border-left: var(--space-025) solid var(--neutral-gray-200);
+      path {
+        fill: var(--gray-500);
+      }
+    }
+
+    .Comment {
+      align-items: center;
+      display: flex;
+      height: var(--space-7);
+      cursor: pointer;
+      padding: 0 var(--space-4);
+      border-left: var(--space-025) solid var(--neutral-gray-200);
+      path {
+        fill: var(--gray-500);
+      }
+    }
+  }
+  .RightBlock {
+    .Help {
+      align-items: center;
+      display: flex;
+      height: var(--space-7);
+      cursor: pointer;
+      border-right: var(--space-025) solid var(--neutral-gray-200);
+      padding: 0 var(--space-4);
+      path {
+        fill: var(--gray-500);
+      }
+    }
+    
+    .Download {
+      padding: 0 var(--space-6);
+    }
+  }
+  .LoginSignup {
+    
+    cursor: default;
+
+    a {
+      cursor: pointer;
+    }
+  }
+}
