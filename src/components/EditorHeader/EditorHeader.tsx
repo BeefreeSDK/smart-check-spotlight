@@ -12,17 +12,26 @@ const HeaderEditor = ({
 
   const smartCheckBlock = (
     <span className={styles.Save}>
-      <button onClick={onSmartCheck} >
-          Smart Check
+      <button onClick={onSmartCheck} className={styles.smartCheckButton}>
+        Smart Check
       </button>
     </span>
   )
 
-
   return (
-    <div className={styles.HeaderEditor}>
-      { smartCheckBlock }
-    </div>
+    <header className={styles.HeaderEditor}>
+      <div className={styles.headerContent}>
+        <div className={styles.LeftBlock}>
+          <div className={styles.logo}>
+            <span>Smart Check</span>
+          </div>
+        </div>
+        
+        <div className={styles.RightBlock}>
+          {smartCheckBlock}
+        </div>
+      </div>
+    </header>
   )
 }
 

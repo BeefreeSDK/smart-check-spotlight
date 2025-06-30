@@ -1,16 +1,17 @@
 import styles from './BeeLoader.module.scss'
 
 type LoaderProps = {
-  fullHeight: boolean
   show: boolean
 }
 
-const Loader = ({ fullHeight, show }: LoaderProps) => (
+const Loader = ({ show }: LoaderProps) => (
   <>
     {
       show && (
-        <div className={styles.Loader} style={{ height: fullHeight ? '100vh' : 'auto' }}>
-          Loading...
+        <div className={styles.Loader}>
+          <div className={styles.loaderContent}>
+            Loading...
+          </div>
         </div>
       )
     }

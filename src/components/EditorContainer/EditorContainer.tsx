@@ -50,7 +50,7 @@ const EditorContainer = () => {
             onStart={onPluginStart}
           />
       }
-      <Loader fullHeight show={!beeLoaderDone} />
+      <Loader show={!beeLoaderDone} />
     </div>
 
   )
