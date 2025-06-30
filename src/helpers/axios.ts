@@ -93,13 +93,4 @@ clientAxiosInstance.interceptors.request.use(bearerInterceptor)
 
 clientAxiosInstance.interceptors.response.use(responseInterceptor, errorInterceptor)
 
-const templateCatalogAxiosInstance: AxiosInstance = axios.create({
-  withCredentials: true,
-  baseURL: `${process.env.TEMPLATE_CATALOG_ENDPOINT}/${process.env.TEMPLATE_CATALOG_VERSION}/catalog/`,
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${process.env.TEMPLATE_CATALOG_API_KEY}`,
-  },
-})
-
-export { clientAxiosInstance, templateCatalogAxiosInstance }
+export { clientAxiosInstance }

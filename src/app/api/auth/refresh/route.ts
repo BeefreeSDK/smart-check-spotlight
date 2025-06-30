@@ -1,11 +1,10 @@
-import { getJwtToken } from '@/helpers/auth-utils'
 import axios from 'axios'
 import { NextRequest, NextResponse } from 'next/server'
 
 // call bee-auth to refresh
 export const POST = async (request: NextRequest) => {
-  const token = getJwtToken(request.headers)
-
+  const authHeader = String(request.headers.get('Authorization') ?? '')
+  const token = authHeader.startsWith('Bearer ') ? authHeader.substring(7, authHeader.length) : null
   return axios.post(process.env.BEEPLUGIN_AUTH_REFRESH, { token })
     .then(response => NextResponse.json(response.data))
     .catch(error => NextResponse.json(

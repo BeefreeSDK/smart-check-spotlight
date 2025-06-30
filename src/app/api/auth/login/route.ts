@@ -21,8 +21,8 @@ export const POST = async (request: NextRequest) => {
 
   return axios.post(process.env.NEXT_PUBLIC_BEEPLUGIN_AUTH_ENDPOINT, {
     uid,
-    client_id: template_type === 'email' ? process.env.BEEPLUGIN_AUTH_EMAIL_CLIENT_ID : process.env.BEEPLUGIN_AUTH_PAGE_CLIENT_ID,
-    client_secret: template_type === 'email' ? process.env.BEEPLUGIN_AUTH_EMAIL_CLIENT_SECRET : process.env.BEEPLUGIN_AUTH_PAGE_CLIENT_SECRET,
+    client_id: process.env.BEEPLUGIN_AUTH_EMAIL_CLIENT_ID,
+    client_secret: process.env.BEEPLUGIN_AUTH_EMAIL_CLIENT_SECRET,
   })
     .then(response => NextResponse.json(response.data))
     .catch(error => NextResponse.json(

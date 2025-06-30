@@ -16,7 +16,7 @@ const Loader = ({ show }: LoaderProps) => (
               <div className={styles.spinnerRing}></div>
             </div>
             <div className={styles.loadingText}>
-              <h3>Beefree SDK - Smart Check Spotlight</h3>
+              <h3>Smart Check Spotlight - Loading template...</h3>
             </div>
           </div>
         </div>
