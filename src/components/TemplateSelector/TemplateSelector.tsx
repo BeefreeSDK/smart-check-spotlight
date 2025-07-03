@@ -16,24 +16,16 @@ const TemplateSelector = ({ onLoadTemplate }: TemplateSelectorProps) => {
         
         <div className={styles.templateGrid}>
           <button 
-            onClick={() => onLoadTemplate('template-1.json')} 
+            onClick={() => onLoadTemplate('simple-template.json')} 
             className={styles.templateButton}
           >
-            Template 1
+            Simple Template Example
           </button>
-          
           <button 
-            onClick={() => onLoadTemplate('template-2.json')} 
+            onClick={() => onLoadTemplate('complex-template.json')} 
             className={styles.templateButton}
           >
-            Template 2
-          </button>
-          
-          <button 
-            onClick={() => onLoadTemplate('template-3.json')} 
-            className={styles.templateButton}
-          >
-            Template 3
+            Complex Template Example
           </button>
         </div>
       </div>

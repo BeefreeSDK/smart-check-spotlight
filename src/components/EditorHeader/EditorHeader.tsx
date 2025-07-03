@@ -13,7 +13,7 @@ const HeaderEditor = ({
   const smartCheckBlock = (
     <span className={styles.Save}>
       <button onClick={onSmartCheck} className={styles.smartCheckButton}>
-        Smart Check
+        Check
       </button>
     </span>
   )
@@ -23,7 +23,7 @@ const HeaderEditor = ({
       <div className={styles.headerContent}>
         <div className={styles.LeftBlock}>
           <div className={styles.logo}>
-            <span>Smart Check</span>
+            <span>Smart Check Spotlight</span>
           </div>
         </div>
         

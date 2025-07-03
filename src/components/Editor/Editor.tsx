@@ -4,14 +4,13 @@ import React, { useEffect, useState } from 'react'
 import BeePlugin from '@beefree.io/sdk'
 import { clientAxiosInstance } from '@/helpers/axios'
 import styles from '@/components/Editor/Editor.module.scss'
-import { BeePluginError, IEntityContentJson, IToken } from '@beefree.io/sdk/dist/types/bee'
+import { IEntityContentJson, IToken } from '@beefree.io/sdk/dist/types/bee'
 import { getBeeConfiguration } from './beeConfiguration'
 
 interface EditorProps {
   template: IEntityContentJson
   onInstanceCreated: (instance: BeePlugin) => void
   onChange: (json: string) => void
-  onWarning: (error: BeePluginError) => void
   onStart: () => void
 }
 
@@ -19,11 +18,10 @@ const Editor = ({
   template,
   onInstanceCreated,
   onChange,
-  onWarning,
   onStart,
 }: EditorProps) => {
   const [pluginStarted, setPluginStarted] = useState(false)
-  const beeConfiguration = getBeeConfiguration({ onChange, onWarning, onStart })
+  const beeConfiguration = getBeeConfiguration({ onChange, onStart })
 
   useEffect(() => {
     if (!pluginStarted && template) {

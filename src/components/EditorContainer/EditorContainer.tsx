@@ -8,6 +8,9 @@ import { IEntityContentJson } from '@beefree.io/sdk/dist/types/bee'
 import { Loader } from '../BeeLoader/BeeLoader'
 import styles from '@/components/EditorContainer/EditorContainer.module.scss'
 import BeePlugin from '@beefree.io/sdk'
+import { clientAxiosInstance } from '@/helpers/axios'
+import { SmartCheckCategory, SmartCheckRequest, SmartCheckResponse } from '@/app/api/check/types'
+import { AxiosResponse } from 'axios'
 
 const EditorContainer = () => {
   const [, setPluginInstance] = useState<BeePlugin | null>(null)
@@ -32,22 +35,46 @@ const EditorContainer = () => {
     }
   }
 
+  const handleSmartCheck = async () => {
+    if (localJson) {
+      await clientAxiosInstance.post<undefined, AxiosResponse<SmartCheckResponse>, SmartCheckRequest>(
+        '/api/check', {
+          template: localJson,
+          checks: [
+            { 
+              "category": SmartCheckCategory.MISSING_ALT_TEXT 
+            },
+            {
+              "category": SmartCheckCategory.OVERAGE_IMAGE_WEIGHT,
+            // @ts-expect-error: fix typing
+              "limit": 500,
+            },
+          ]
+        }
+      )
+      // setSmartCheckResults(response.data)
+    }
+  }
+
+  const handleOnChange = (json: string) => {
+    setLocalJson(JSON.parse(json))
+  }
+
   return (
     <div className={styles.Container}>
       <HeaderEditor
-        onSmartCheck={() => { /* void */ }}
+        onSmartCheck={handleSmartCheck}
       />
-      {localJson ? (
-        <Editor
-          template={localJson}
-          onInstanceCreated={setPluginInstance}
-          onChange={() => { /* void */ }}
-          onWarning={() => { /* void */ }}
-          onStart={onPluginStart}
-        />
-      ) : (
-        <TemplateSelector onLoadTemplate={handleLoadTemplate} />
-      )}
+      {
+        localJson 
+          ? <Editor
+              onInstanceCreated={setPluginInstance}
+              onStart={onPluginStart}
+              template={localJson}
+              onChange={handleOnChange}
+            />
+          : <TemplateSelector onLoadTemplate={handleLoadTemplate} />
+      }
       <Loader show={!!localJson && !beeLoaderDone} />
     </div>
   )
