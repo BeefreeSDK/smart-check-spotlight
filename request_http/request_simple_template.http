@@ -1,0 +1,390 @@
+### It needs the REST Client extension for VS Code
+
+###  checks on the simple-template.json
+POST https://qa-api.getbee.io/v1/message/check HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer d9f50c8d6454103d1a7e74ac54c4030bbc0a06735ee4f6123b5606aae0c3926c
+
+{
+  "checks": [
+    {"category":"missingAltText"},  
+    {"category":"overageImageWeight", "limit": 500}
+    ],
+  "template": {
+    "page": {
+        "body": {
+            "container": {
+                "style": {
+                    "background-color": "#ffffff"
+                }
+            },
+            "content": {
+                "computedStyle": {
+                    "linkColor": "#7747FF",
+                    "messageBackgroundColor": "transparent",
+                    "messageWidth": "730px"
+                },
+                "style": {
+                    "color": "#000000",
+                    "font-family": "'Roboto', Tahoma, Verdana, Segoe, sans-serif"
+                }
+            },
+            "type": "mailup-bee-page-properties",
+            "webFonts": [
+                {
+                    "fontFamily": "'Abril Fatface', 'Times New Roman', serif",
+                    "name": "Abril Fatface",
+                    "url": "https://fonts.googleapis.com/css2?family=Abril+Fatface:wght@100;200;300;400;500;600;700;800;900"
+                },
+                {
+                    "fontFamily": "'Roboto Slab', 'Times New Roman', serif",
+                    "name": "Roboto Slab",
+                    "url": "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900"
+                },
+                {
+                    "fontFamily": "'Roboto', Tahoma, Verdana, Segoe, sans-serif",
+                    "name": "Roboto",
+                    "url": "https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900"
+                }
+            ]
+        },
+        "description": "",
+        "rows": [
+            {
+                "container": {
+                    "style": {
+                        "background-color": "transparent",
+                        "background-image": "none",
+                        "background-repeat": "no-repeat",
+                        "background-position": "top left"
+                    }
+                },
+                "content": {
+                    "style": {
+                        "background-color": "transparent",
+                        "color": "#000000",
+                        "width": "730px",
+                        "background-image": "none",
+                        "background-repeat": "no-repeat",
+                        "background-position": "top left",
+                        "border-top": "0px solid transparent",
+                        "border-right": "0px solid transparent",
+                        "border-bottom": "0px solid transparent",
+                        "border-left": "0px solid transparent",
+                        "border-radius": "0px",
+                        "padding-top": "0px",
+                        "padding-right": "0px",
+                        "padding-bottom": "0px",
+                        "padding-left": "0px"
+                    },
+                    "mobileStyle": {},
+                    "computedStyle": {
+                        "rowColStackOnMobile": true,
+                        "rowReverseColStackOnMobile": false,
+                        "verticalAlign": "top",
+                        "hideContentOnMobile": false,
+                        "hideContentOnDesktop": false
+                    }
+                },
+                "columns": [
+                    {
+                        "style": {
+                            "background-color": "transparent",
+                            "border-bottom": "0px solid transparent",
+                            "border-left": "0px solid transparent",
+                            "border-right": "0px solid transparent",
+                            "border-top": "0px solid transparent",
+                            "padding-bottom": "5px",
+                            "padding-left": "0px",
+                            "padding-right": "0px",
+                            "padding-top": "5px"
+                        },
+                        "modules": [
+                            {
+                                "type": "mailup-bee-newsletter-modules-heading",
+                                "descriptor": {
+                                    "heading": {
+                                        "title": "h1",
+                                        "text": "<span class=\"tinyMce-placeholder\">I'm a small image without an alt text</span>",
+                                        "style": {
+                                            "color": "#000000",
+                                            "font-size": "38px",
+                                            "font-family": "'Roboto', Tahoma, Verdana, Segoe, sans-serif",
+                                            "link-color": "#7747FF",
+                                            "line-height": "120%",
+                                            "text-align": "center",
+                                            "direction": "ltr",
+                                            "font-weight": "400",
+                                            "letter-spacing": "0px"
+                                        }
+                                    },
+                                    "style": {
+                                        "width": "100%",
+                                        "text-align": "center",
+                                        "padding-top": "10px",
+                                        "padding-right": "10px",
+                                        "padding-bottom": "10px",
+                                        "padding-left": "10px"
+                                    },
+                                    "mobileStyle": {}
+                                },
+                                "locked": false,
+                                "uuid": "511c9b7c-c478-4852-baf5-8492d878ae69"
+                            },
+                            {
+                                "type": "mailup-bee-newsletter-modules-paragraph",
+                                "descriptor": {
+                                    "paragraph": {
+                                        "html": "<p>✅ Image size is correct</p>\n<p>❌ Alt Text is missing<a jsname=\"UWckNb\" href=\"https://emojipedia.org/cross-mark\" ping=\"/url?sa=t&amp;source=web&amp;rct=j&amp;opi=89978449&amp;url=https://emojipedia.org/cross-mark&amp;ved=2ahUKEwjjr9Pg3JuOAxW69bsIHaznJ9EQFnoECBYQAQ\" style=\"text-decoration: underline;\"></a></p>\n<p>&nbsp;</p>",
+                                        "style": {
+                                            "color": "#101112",
+                                            "font-size": "16px",
+                                            "font-family": "'Roboto', Tahoma, Verdana, Segoe, sans-serif",
+                                            "font-weight": "400",
+                                            "line-height": "120%",
+                                            "text-align": "center",
+                                            "direction": "ltr",
+                                            "letter-spacing": "0px"
+                                        },
+                                        "computedStyle": {
+                                            "linkColor": "#7747FF",
+                                            "paragraphSpacing": "16px"
+                                        }
+                                    },
+                                    "style": {
+                                        "padding-top": "10px",
+                                        "padding-right": "10px",
+                                        "padding-bottom": "10px",
+                                        "padding-left": "10px"
+                                    },
+                                    "mobileStyle": {},
+                                    "computedStyle": {
+                                        "hideContentOnAmp": false,
+                                        "hideContentOnHtml": false,
+                                        "hideContentOnDesktop": false,
+                                        "hideContentOnMobile": false
+                                    }
+                                },
+                                "locked": false,
+                                "uuid": "23bd2f4d-5721-499e-8eb6-bd0bd294b85e"
+                            },
+                            {
+                                "type": "mailup-bee-newsletter-modules-image",
+                                "descriptor": {
+                                    "image": {
+                                        "alt": "",
+                                        "src": "https://d15k2d11r6t6rl.cloudfront.net/pub/bfra/zjiv70yf/vfl/vzm/5z8/61bDJJT2tbL._UF894%2C1000_QL80_.jpg",
+                                        "href": "",
+                                        "target": "_blank",
+                                        "width": "1152px",
+                                        "height": "896px"
+                                    },
+                                    "style": {
+                                        "width": "100%",
+                                        "border-radius": "0px",
+                                        "padding-top": "0px",
+                                        "padding-right": "0px",
+                                        "padding-bottom": "0px",
+                                        "padding-left": "0px"
+                                    },
+                                    "computedStyle": {
+                                        "class": "center autowidth",
+                                        "width": "730px",
+                                        "hideContentOnMobile": false
+                                    },
+                                    "mobileStyle": {}
+                                },
+                                "locked": false,
+                                "uuid": "a64e6596-702c-420b-a766-710782f64b8d"
+                            }
+                        ],
+                        "grid-columns": 12,
+                        "uuid": "e623bd17-e148-4e14-bacd-3ad4f56fb0d8"
+                    }
+                ],
+                "type": "one-column-empty",
+                "uuid": "a68b86bb-be1c-4220-9034-ee6cb8688859"
+            },
+            {
+                "columns": [
+                    {
+                        "grid-columns": 12,
+                        "modules": [
+                            {
+                                "type": "mailup-bee-newsletter-modules-divider",
+                                "descriptor": {
+                                    "divider": {
+                                        "style": {
+                                            "border-top": "6px solid #000000",
+                                            "width": "100%"
+                                        }
+                                    },
+                                    "style": {
+                                        "padding-top": "50px",
+                                        "padding-right": "10px",
+                                        "padding-bottom": "50px",
+                                        "padding-left": "10px"
+                                    },
+                                    "mobileStyle": {},
+                                    "computedStyle": {
+                                        "align": "center",
+                                        "hideContentOnMobile": false
+                                    }
+                                },
+                                "locked": false,
+                                "uuid": "484d9b39-aaeb-4611-9d61-ecaad1ec893e"
+                            },
+                            {
+                                "type": "mailup-bee-newsletter-modules-heading",
+                                "descriptor": {
+                                    "heading": {
+                                        "title": "h1",
+                                        "text": "<span class=\"tinyMce-placeholder\">I'm a big image with an alt text</span>",
+                                        "style": {
+                                            "color": "#000000",
+                                            "font-size": "38px",
+                                            "font-family": "'Roboto', Tahoma, Verdana, Segoe, sans-serif",
+                                            "link-color": "#7747FF",
+                                            "line-height": "120%",
+                                            "text-align": "center",
+                                            "direction": "ltr",
+                                            "font-weight": "400",
+                                            "letter-spacing": "0px"
+                                        }
+                                    },
+                                    "style": {
+                                        "width": "100%",
+                                        "text-align": "center",
+                                        "padding-top": "10px",
+                                        "padding-right": "10px",
+                                        "padding-bottom": "10px",
+                                        "padding-left": "10px"
+                                    },
+                                    "mobileStyle": {}
+                                },
+                                "locked": false,
+                                "uuid": "1ce9bbf5-3f6f-4736-a463-cff3e29bc77d"
+                            },
+                            {
+                                "type": "mailup-bee-newsletter-modules-paragraph",
+                                "descriptor": {
+                                    "paragraph": {
+                                        "html": "<p>❌ Image size is over the limit</p>\n<p>✅ Alt Text is correct</p>\n<p>&nbsp;</p>",
+                                        "style": {
+                                            "color": "#101112",
+                                            "font-size": "16px",
+                                            "font-family": "'Roboto', Tahoma, Verdana, Segoe, sans-serif",
+                                            "font-weight": "400",
+                                            "line-height": "120%",
+                                            "text-align": "center",
+                                            "direction": "ltr",
+                                            "letter-spacing": "0px"
+                                        },
+                                        "computedStyle": {
+                                            "linkColor": "#7747FF",
+                                            "paragraphSpacing": "16px"
+                                        }
+                                    },
+                                    "style": {
+                                        "padding-top": "10px",
+                                        "padding-right": "10px",
+                                        "padding-bottom": "10px",
+                                        "padding-left": "10px"
+                                    },
+                                    "mobileStyle": {},
+                                    "computedStyle": {
+                                        "hideContentOnAmp": false,
+                                        "hideContentOnHtml": false,
+                                        "hideContentOnDesktop": false,
+                                        "hideContentOnMobile": false
+                                    }
+                                },
+                                "locked": false,
+                                "uuid": "3579d66c-36d6-46da-af8e-601c0ef30d6c"
+                            },
+                            {
+                                "type": "mailup-bee-newsletter-modules-image",
+                                "descriptor": {
+                                    "image": {
+                                        "alt": "a landscape",
+                                        "src": "https://d15k2d11r6t6rl.cloudfront.net/pub/bfra/zjiv70yf/39z/rc4/w6e/1751374777926.png",
+                                        "href": "",
+                                        "target": "_blank",
+                                        "height": "896px",
+                                        "width": "1152px"
+                                    },
+                                    "style": {
+                                        "width": "100%",
+                                        "border-radius": "0px",
+                                        "padding-top": "0px",
+                                        "padding-right": "0px",
+                                        "padding-bottom": "0px",
+                                        "padding-left": "0px"
+                                    },
+                                    "computedStyle": {
+                                        "class": "center autowidth",
+                                        "width": "730px",
+                                        "hideContentOnMobile": false
+                                    },
+                                    "mobileStyle": {}
+                                },
+                                "locked": false,
+                                "uuid": "1354cd78-3381-4eb6-ae84-fecd85de9a8e"
+                            }
+                        ],
+                        "style": {
+                            "background-color": "transparent",
+                            "border-bottom": "0px solid transparent",
+                            "border-left": "0px solid transparent",
+                            "border-right": "0px solid transparent",
+                            "border-top": "0px solid transparent",
+                            "padding-bottom": "5px",
+                            "padding-left": "0px",
+                            "padding-right": "0px",
+                            "padding-top": "5px"
+                        },
+                        "uuid": "56119ad2-574d-4122-8dd1-c1152b5f4879"
+                    }
+                ],
+                "container": {
+                    "style": {
+                        "background-color": "transparent",
+                        "background-image": "none",
+                        "background-position": "top left",
+                        "background-repeat": "no-repeat"
+                    }
+                },
+                "content": {
+                    "computedStyle": {
+                        "hideContentOnDesktop": false,
+                        "hideContentOnMobile": false,
+                        "rowColStackOnMobile": true,
+                        "rowReverseColStackOnMobile": false,
+                        "verticalAlign": "top"
+                    },
+                    "style": {
+                        "background-color": "transparent",
+                        "background-image": "none",
+                        "background-position": "top left",
+                        "background-repeat": "no-repeat",
+                        "color": "#000000",
+                        "width": "730px"
+                    }
+                },
+                "empty": false,
+                "locked": false,
+                "synced": false,
+                "type": "one-column-empty",
+                "uuid": "0922fb70-f97e-4ae8-bcfe-0be9fd09a0d5"
+            }
+        ],
+        "template": {
+            "name": "template-base",
+            "type": "basic",
+            "version": "2.0.0"
+        },
+        "title": ""
+    },
+    "comments": {}
+}
+}
