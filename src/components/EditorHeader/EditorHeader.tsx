@@ -1,22 +1,22 @@
 'use client'
 
 import styles from '@/components/EditorHeader/EditorHeader.module.scss'
+import { SmartCheckButton } from '../SmartCheckButton/SmartCheckButton'
+import { BasicSmartCheckResponse } from '@/app/api/check/types'
 
 interface HeaderEditorProps {
   onSmartCheck: () => void
+  smartCheckResults: BasicSmartCheckResponse | null
+  onSelectTarget: (uuid: string) => Promise<void> | null
+  onHoverTarget: (uuid: string) => Promise<void> | null
 }
 
 const HeaderEditor = ({
   onSmartCheck,
+  smartCheckResults,
+  onSelectTarget,
+  onHoverTarget,
 }: HeaderEditorProps) => {
-
-  const smartCheckBlock = (
-    <span className={styles.Save}>
-      <button onClick={onSmartCheck} className={styles.smartCheckButton}>
-        Check
-      </button>
-    </span>
-  )
 
   return (
     <header className={styles.HeaderEditor}>
@@ -28,7 +28,12 @@ const HeaderEditor = ({
         </div>
         
         <div className={styles.RightBlock}>
-          {smartCheckBlock}
+          <SmartCheckButton 
+            onSmartCheck={onSmartCheck} 
+            smartCheckResults={smartCheckResults}
+            onSelectTarget={onSelectTarget}
+            onHoverTarget={onHoverTarget}
+          />
         </div>
       </div>
     </header>

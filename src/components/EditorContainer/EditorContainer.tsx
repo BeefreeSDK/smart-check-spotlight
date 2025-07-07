@@ -3,19 +3,20 @@
 import { Editor } from '@/components/Editor/Editor'
 import { HeaderEditor } from '@/components/EditorHeader/EditorHeader'
 import { TemplateSelector } from '@/components/TemplateSelector/TemplateSelector'
-import { useState } from 'react'
-import { IEntityContentJson } from '@beefree.io/sdk/dist/types/bee'
+import { useCallback, useState } from 'react'
+import { ExecCommands, IEntityContentJson } from '@beefree.io/sdk/dist/types/bee'
 import { Loader } from '../BeeLoader/BeeLoader'
 import styles from '@/components/EditorContainer/EditorContainer.module.scss'
 import BeePlugin from '@beefree.io/sdk'
 import { clientAxiosInstance } from '@/helpers/axios'
-import { SmartCheckCategory, SmartCheckRequest, SmartCheckResponse } from '@/app/api/check/types'
+import { BasicSmartCheckResponse, SmartCheckCategory, SmartCheckRequest, SmartCheckResponse } from '@/app/api/check/types'
 import { AxiosResponse } from 'axios'
 
 const EditorContainer = () => {
-  const [, setPluginInstance] = useState<BeePlugin | null>(null)
+  const [pluginInstance, setPluginInstance] = useState<BeePlugin | null>(null)
   const [beeLoaderDone, setBeeLoaderDone] = useState(false)
   const [localJson, setLocalJson] = useState<IEntityContentJson | null>(null)
+  const [smartCheckResults, setSmartCheckResults] = useState<BasicSmartCheckResponse | null>(null)
 
   const onPluginStart = () => {
     setBeeLoaderDone(true)
@@ -35,9 +36,9 @@ const EditorContainer = () => {
     }
   }
 
-  const handleSmartCheck = async () => {
+  const handleSmartCheck = useCallback(async () => {
     if (localJson) {
-      await clientAxiosInstance.post<undefined, AxiosResponse<SmartCheckResponse>, SmartCheckRequest>(
+      const response = await clientAxiosInstance.post<undefined, AxiosResponse<SmartCheckResponse>, SmartCheckRequest>(
         '/api/check', {
           template: localJson,
           checks: [
@@ -46,14 +47,27 @@ const EditorContainer = () => {
             },
             {
               "category": SmartCheckCategory.OVERAGE_IMAGE_WEIGHT,
-            // @ts-expect-error: fix typing
               "limit": 500,
             },
           ]
         }
       )
-      // setSmartCheckResults(response.data)
+
+      const defaultSmartCheckResult = response.data.find(e => e.language === 'default')
+
+      if (defaultSmartCheckResult) {
+        setSmartCheckResults(defaultSmartCheckResult)
+      }
     }
+  }, [localJson])
+
+  const selectSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string) => {
+    await editorInstance.execCommand(ExecCommands.SELECT, { target: { uuid } })
+  }
+
+  const hoverSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string) => {
+    await editorInstance.execCommand(ExecCommands.SCROLL, { target: { uuid } })
+    await editorInstance.execCommand(ExecCommands.HIGHLIGHT, { target: { uuid } })
   }
 
   const handleOnChange = (json: string) => {
@@ -64,6 +78,9 @@ const EditorContainer = () => {
     <div className={styles.Container}>
       <HeaderEditor
         onSmartCheck={handleSmartCheck}
+        smartCheckResults={smartCheckResults}
+        onSelectTarget={(uuid: string) => pluginInstance && selectSmartChecksTarget(pluginInstance, uuid)}
+        onHoverTarget={(uuid: string) => pluginInstance && hoverSmartChecksTarget(pluginInstance, uuid)}
       />
       {
         localJson 

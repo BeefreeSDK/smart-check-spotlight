@@ -15,9 +15,16 @@ export enum SmartCheckCategory {
 
 export type SmartCheckRequest = {
   template: IEntityContentJson
-  checks: {
-    category: SmartCheckCategory;
-  }[];
+  checks: ({
+    category: SmartCheckCategory.OVERAGE_IMAGE_WEIGHT,
+    limit: number
+  } | {
+    category: SmartCheckCategory.OVERAGE_HTML_WEIGHT,
+    limit: number,
+    beautified: boolean
+  } | {
+    category: SmartCheckCategory.MISSING_ALT_TEXT | SmartCheckCategory.MISSING_IMAGE_LINK | SmartCheckCategory.MISSING_COPY_LINK | SmartCheckCategory.MISSING_EMAIL_DETAILS
+  })[];
 }
 
 /* ========== RESPONSE TYPES ========== */
@@ -44,7 +51,7 @@ type CheckTarget = {
   };
 }[keyof CheckTypeToTarget]
 
-enum SmartChecksStatus {
+export enum SmartChecksStatus {
   WARNING = 'warning',
   SUGGESTION = 'suggestion',
   PASSED = 'passed',
@@ -63,8 +70,7 @@ type SmartChecksType = {
   displayConditions?: boolean
 }
 
-
-export type SmartCheckResponse = {
+export type BasicSmartCheckResponse = {
   language: 'default' | string
   checks: SmartChecksType[]
   status: SmartChecksStatus
@@ -72,4 +78,6 @@ export type SmartCheckResponse = {
   checksSuggestionCount: number   // suggestions
   checksFailedCount: number       // warnings + suggestions
   dateTime: Date
-}[]
+}
+
+export type SmartCheckResponse = BasicSmartCheckResponse[]
