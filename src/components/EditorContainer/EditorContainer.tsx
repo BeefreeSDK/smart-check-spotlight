@@ -49,6 +49,17 @@ const EditorContainer = () => {
               "category": SmartCheckCategory.OVERAGE_IMAGE_WEIGHT,
               "limit": 500,
             },
+            // {
+            //   "category": SmartCheckCategory.MISSING_COPY_LINK,
+            // },
+            // {
+            //   "category": SmartCheckCategory.MISSING_IMAGE_LINK,
+            // },
+            // {
+            //   "category": SmartCheckCategory.OVERAGE_HTML_WEIGHT,
+            //   "limit": 5000,
+            //   "beautified": true
+            // },
           ]
         }
       )

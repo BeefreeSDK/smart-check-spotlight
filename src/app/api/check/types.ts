@@ -7,7 +7,6 @@ export enum SmartCheckCategory {
   MISSING_IMAGE_LINK = 'missingImageLink',
   MISSING_COPY_LINK = 'missingCopyLink',
   OVERAGE_IMAGE_WEIGHT = 'overageImageWeight',
-  MISSING_EMAIL_DETAILS = 'missingEmailDetail',
   OVERAGE_HTML_WEIGHT = 'overageHtmlWeight'
 }
 
@@ -23,7 +22,7 @@ export type SmartCheckRequest = {
     limit: number,
     beautified: boolean
   } | {
-    category: SmartCheckCategory.MISSING_ALT_TEXT | SmartCheckCategory.MISSING_IMAGE_LINK | SmartCheckCategory.MISSING_COPY_LINK | SmartCheckCategory.MISSING_EMAIL_DETAILS
+    category: SmartCheckCategory.MISSING_ALT_TEXT | SmartCheckCategory.MISSING_IMAGE_LINK | SmartCheckCategory.MISSING_COPY_LINK
   })[];
 }
 
