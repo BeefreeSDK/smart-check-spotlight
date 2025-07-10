@@ -36,6 +36,10 @@ const EditorContainer = () => {
     }
   }
 
+  const handleOnChange = (json: string) => {
+    setLocalJson(JSON.parse(json))
+  }
+
   const handleSmartCheck = useCallback(async () => {
     if (localJson) {
       const response = await clientAxiosInstance.post<undefined, AxiosResponse<SmartCheckResponse>, SmartCheckRequest>(
@@ -49,17 +53,17 @@ const EditorContainer = () => {
               "category": SmartCheckCategory.OVERAGE_IMAGE_WEIGHT,
               "limit": 500,
             },
-            // {
-            //   "category": SmartCheckCategory.MISSING_COPY_LINK,
-            // },
-            // {
-            //   "category": SmartCheckCategory.MISSING_IMAGE_LINK,
-            // },
-            // {
-            //   "category": SmartCheckCategory.OVERAGE_HTML_WEIGHT,
-            //   "limit": 5000,
-            //   "beautified": true
-            // },
+            {
+              "category": SmartCheckCategory.MISSING_COPY_LINK,
+            },
+            {
+              "category": SmartCheckCategory.MISSING_IMAGE_LINK,
+            },
+            {
+              "category": SmartCheckCategory.OVERAGE_HTML_WEIGHT,
+              "limit": 5000,
+              "beautified": true
+            },
           ]
         }
       )
@@ -72,8 +76,11 @@ const EditorContainer = () => {
     }
   }, [localJson])
 
-  const selectSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string) => {
+  const selectSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string, selector: string | null) => {
     await editorInstance.execCommand(ExecCommands.SELECT, { target: { uuid } })
+    if (selector) {
+      await editorInstance.execCommand(ExecCommands.FOCUS, { target: { selector } })
+    }
   }
 
   const hoverSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string) => {
@@ -81,27 +88,30 @@ const EditorContainer = () => {
     await editorInstance.execCommand(ExecCommands.HIGHLIGHT, { target: { uuid } })
   }
 
-  const handleOnChange = (json: string) => {
-    setLocalJson(JSON.parse(json))
-  }
-
   return (
     <div className={styles.Container}>
-      <HeaderEditor
-        onSmartCheck={handleSmartCheck}
-        smartCheckResults={smartCheckResults}
-        onSelectTarget={(uuid: string) => pluginInstance && selectSmartChecksTarget(pluginInstance, uuid)}
-        onHoverTarget={(uuid: string) => pluginInstance && hoverSmartChecksTarget(pluginInstance, uuid)}
-      />
       {
-        localJson 
-          ? <Editor
-              onInstanceCreated={setPluginInstance}
-              onStart={onPluginStart}
-              template={localJson}
-              onChange={handleOnChange}
-            />
-          : <TemplateSelector onLoadTemplate={handleLoadTemplate} />
+        pluginInstance && (
+          <HeaderEditor
+            onSmartCheck={handleSmartCheck}
+            smartCheckResults={smartCheckResults}
+            onTargetClick={(uuid: string, key: string | null) => selectSmartChecksTarget(pluginInstance, uuid, key)}
+            onTargetHover={(uuid: string) => hoverSmartChecksTarget(pluginInstance, uuid)}
+            isEditorReady={!!pluginInstance}
+          />
+        )
+      }
+      {
+        localJson ? (
+          <Editor
+            onInstanceCreated={setPluginInstance}
+            onStart={onPluginStart}
+            template={localJson}
+            onChange={handleOnChange}
+          />
+        ) : (
+          <TemplateSelector onLoadTemplate={handleLoadTemplate} />
+        )
       }
       <Loader show={!!localJson && !beeLoaderDone} />
     </div>

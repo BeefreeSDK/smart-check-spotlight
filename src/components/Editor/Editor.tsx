@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import BeePlugin from '@beefree.io/sdk'
 import { clientAxiosInstance } from '@/helpers/axios'
 import styles from '@/components/Editor/Editor.module.scss'
@@ -20,11 +20,12 @@ const Editor = ({
   onChange,
   onStart,
 }: EditorProps) => {
-  const [pluginStarted, setPluginStarted] = useState(false)
+  const pluginStarted = useRef(false)
   const beeConfiguration = getBeeConfiguration({ onChange, onStart })
 
   useEffect(() => {
-    if (!pluginStarted && template) {
+    if (!pluginStarted.current && template) {
+      pluginStarted.current = true
       void clientAxiosInstance.post('api/auth/login', { template_type: 'email' })
         .then(({ data }: { data: IToken }) => {
           const beeInstance = new BeePlugin(data, {
@@ -33,13 +34,12 @@ const Editor = ({
           })
           onInstanceCreated(beeInstance)
           void beeInstance.start(beeConfiguration, template, '', { shared: false })
-          setPluginStarted(true)
         })
         .catch((error: unknown) => {
           console.log(error)
         })
     }
-  }, [beeConfiguration, onInstanceCreated, pluginStarted, template])
+  }, [beeConfiguration, onInstanceCreated, template])
 
   return (
     <div id="bee-plugin-container" className={styles.BeePluginContainer} />

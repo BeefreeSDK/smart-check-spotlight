@@ -22,7 +22,11 @@ export type SmartCheckRequest = {
     limit: number,
     beautified: boolean
   } | {
-    category: SmartCheckCategory.MISSING_ALT_TEXT | SmartCheckCategory.MISSING_IMAGE_LINK | SmartCheckCategory.MISSING_COPY_LINK
+    category: (
+      SmartCheckCategory.MISSING_ALT_TEXT 
+      | SmartCheckCategory.MISSING_IMAGE_LINK 
+      | SmartCheckCategory.MISSING_COPY_LINK
+    )
   })[];
 }
 
@@ -39,7 +43,6 @@ type CheckTypeToTarget = {
   [SmartCheckCategory.MISSING_COPY_LINK]: SmartCheckBase
   [SmartCheckCategory.MISSING_IMAGE_LINK]: SmartCheckBase
   [SmartCheckCategory.OVERAGE_IMAGE_WEIGHT]: SmartCheckBase & { weight: number }
-  [SmartCheckCategory.MISSING_EMAIL_DETAILS]: SmartCheckBase & { detailType: 'subject' | 'preheader' }
   [SmartCheckCategory.OVERAGE_HTML_WEIGHT]: SmartCheckBase & { weight: number, beautified: boolean }
 }
 

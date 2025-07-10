@@ -4,81 +4,64 @@ import styles from './SmartCheckButton.module.scss'
 import { BasicSmartCheckResponse, SmartCheckCategory, SmartChecksStatus } from "@/app/api/check/types"
 
 interface SmartCheckButtonProps {
+   disabled: boolean
    onSmartCheck: () => void
    smartCheckResults: BasicSmartCheckResponse | null
-   onSelectTarget: (uuid: string) => Promise<void> | null
-   onHoverTarget: (uuid: string) => Promise<void> | null
+   onTargetClick: (uuid: string, selector: string | null) => Promise<void> | null
+   onTargetHover: (uuid: string) => Promise<void> | null
 }
 
-export const SmartCheckButton = ({ onSmartCheck, smartCheckResults, onSelectTarget, onHoverTarget }: SmartCheckButtonProps) => {
+export const SmartCheckButton = ({ disabled, onSmartCheck, smartCheckResults, onTargetClick, onTargetHover }: SmartCheckButtonProps) => {
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   const handleOnClick = () => {
-    setIsPopoverOpen(!isPopoverOpen)
-  }
-
-  useEffect(() => {
     if (isPopoverOpen) {
+      setIsPopoverOpen(false)
+    } else {
+      setIsPopoverOpen(true)
       onSmartCheck()
     }
-  }, [isPopoverOpen, onSmartCheck])
-
-  const getStatusIcon = (status: SmartChecksStatus) => {
-    switch (status) {
-      case SmartChecksStatus.PASSED:
-        return "✅"
-      case SmartChecksStatus.WARNING:
-        return "⚠️"
-      case SmartChecksStatus.SUGGESTION:
-        return "💡"
-      default:
-        return "❓"
-    }
   }
 
-  const getStatusColor = (status: SmartChecksStatus) => {
-    switch (status) {
-      case SmartChecksStatus.PASSED:
-        return styles.passed
-      case SmartChecksStatus.WARNING:
-        return styles.warning
-      case SmartChecksStatus.SUGGESTION:
-        return styles.suggestion
-      default:
-        return styles.default
-    }
+  const checkStatusToStyle: Record<SmartChecksStatus, string> = {
+    [SmartChecksStatus.PASSED]: styles.passed,
+    [SmartChecksStatus.WARNING]: styles.warning,
+    [SmartChecksStatus.SUGGESTION]: styles.suggestion,
   }
 
-  const formatCheckType = (type: SmartCheckCategory) => {
-    switch (type) {
-      case SmartCheckCategory.MISSING_ALT_TEXT:
-        return "Missing Alt Text"
-      case SmartCheckCategory.MISSING_IMAGE_LINK:
-        return "Missing Image Link"
-      case SmartCheckCategory.MISSING_COPY_LINK:
-        return "Missing Copy Link"
-      case SmartCheckCategory.OVERAGE_IMAGE_WEIGHT:
-        return "Image Weight Over Limit"
-      case SmartCheckCategory.MISSING_EMAIL_DETAILS:
-        return "Missing Email Details"
-      case SmartCheckCategory.OVERAGE_HTML_WEIGHT:
-        return "HTML Weight Over Limit"
-      default:
-        return type
-    }
+  const checkStatusToIcon: Record<SmartChecksStatus, string> = {
+    [SmartChecksStatus.PASSED]: "✅",
+    [SmartChecksStatus.WARNING]: "⚠️",
+    [SmartChecksStatus.SUGGESTION]: "💡",
   }
 
-  const handleTargetClick = async (uuid: string) => {
-    if (onSelectTarget) {
-      await onSelectTarget(uuid)
+  const checkTypeToLabel: Record<SmartCheckCategory, string> = {
+    [SmartCheckCategory.MISSING_ALT_TEXT]: "Missing Alt Text",
+    [SmartCheckCategory.MISSING_IMAGE_LINK]: "Missing Image Link",
+    [SmartCheckCategory.MISSING_COPY_LINK]: "Missing Copy Link",
+    [SmartCheckCategory.OVERAGE_IMAGE_WEIGHT]: "Image Weight Over Limit",
+    [SmartCheckCategory.OVERAGE_HTML_WEIGHT]: "HTML Weight Over Limit",
+  }
+
+  const checkTypeToSelector: Record<SmartCheckCategory, string | null> = {
+    [SmartCheckCategory.MISSING_ALT_TEXT]: '.alternate-txt--cs',
+    [SmartCheckCategory.MISSING_IMAGE_LINK]: '.href-container--cs',
+    [SmartCheckCategory.MISSING_COPY_LINK]: '.href-container--cs',
+    [SmartCheckCategory.OVERAGE_IMAGE_WEIGHT]: null,
+    [SmartCheckCategory.OVERAGE_HTML_WEIGHT]: null,
+  }
+
+  const handleOnTargetClick = async (uuid: string, checkType: SmartCheckCategory) => {
+    if (onTargetClick) {
+      await onTargetClick(uuid, checkTypeToSelector[checkType])
       setIsPopoverOpen(false)
     }
   }
 
-  const handleTargetHover = async (uuid: string) => {
-    if (onHoverTarget) {
-      await onHoverTarget(uuid)
+  const handleOnTargetHover = async (uuid: string) => {
+    if (onTargetHover) {
+      await onTargetHover(uuid)
     }
   }
 
@@ -101,10 +84,10 @@ export const SmartCheckButton = ({ onSmartCheck, smartCheckResults, onSelectTarg
       {smartCheckResults ? (
         <div className={styles.checksList}>
           {smartCheckResults.checks.map((check, index) => (
-            <div key={index} className={`${styles.checkItem} ${getStatusColor(check.checkStatus)}`}>
+            <div key={index} className={`${styles.checkItem} ${checkStatusToStyle[check.checkStatus]}`}>
               <div className={styles.checkHeader}>
-                <span className={styles.statusIcon}>{getStatusIcon(check.checkStatus)}</span>
-                <span className={styles.checkType}>{formatCheckType(check.type)}</span>
+                <span className={styles.statusIcon}>{checkStatusToIcon[check.checkStatus]}</span>
+                <span className={styles.checkType}>{checkTypeToLabel[check.type]}</span>
                 <span className={styles.targetsCount}>({check.targetsCount})</span>
               </div>
            
@@ -114,8 +97,8 @@ export const SmartCheckButton = ({ onSmartCheck, smartCheckResults, onSelectTarg
                     <button
                       key={targetIndex}
                       className={styles.targetButton}
-                      onClick={() => handleTargetClick(target.uuid)}
-                      onMouseEnter={() => handleTargetHover(target.uuid)}
+                      onClick={() => handleOnTargetClick(target.uuid, check.type)}
+                      onMouseEnter={() => handleOnTargetHover(target.uuid)}
                     >
                       {target.widgetType || 'Unknown Element'} 
                       <span className={styles.targetUuid}>({target.uuid})</span>
@@ -141,7 +124,7 @@ export const SmartCheckButton = ({ onSmartCheck, smartCheckResults, onSelectTarg
       positions={['bottom']}
       content={content}
     >
-      <button onClick={handleOnClick} className={styles.smartCheckButton}>
+      <button onClick={handleOnClick} className={styles.smartCheckButton} disabled={disabled}>
         Check
       </button>
     </Popover>
