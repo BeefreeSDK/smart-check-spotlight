@@ -3,7 +3,7 @@
 import { Editor } from '@/components/Editor/Editor'
 import { HeaderEditor } from '@/components/EditorHeader/EditorHeader'
 import { TemplateSelector } from '@/components/TemplateSelector/TemplateSelector'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { ExecCommands, IEntityContentJson } from '@beefree.io/sdk/dist/types/bee'
 import { Loader } from '../BeeLoader/BeeLoader'
 import styles from '@/components/EditorContainer/EditorContainer.module.scss'
@@ -40,7 +40,7 @@ const EditorContainer = () => {
     setLocalJson(JSON.parse(json))
   }
 
-  const handleSmartCheck = useCallback(async () => {
+  const handleSmartCheck = async () => {
     if (localJson) {
       const response = await clientAxiosInstance.post<undefined, AxiosResponse<SmartCheckResponse>, SmartCheckRequest>(
         '/api/check', {
@@ -74,7 +74,7 @@ const EditorContainer = () => {
         setSmartCheckResults(defaultSmartCheckResult)
       }
     }
-  }, [localJson])
+  }
 
   const selectSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string, selector: string | null) => {
     await editorInstance.execCommand(ExecCommands.SELECT, { target: { uuid } })
