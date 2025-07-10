@@ -17,6 +17,7 @@ const EditorContainer = () => {
   const [beeLoaderDone, setBeeLoaderDone] = useState(false)
   const [localJson, setLocalJson] = useState<IEntityContentJson | null>(null)
   const [smartCheckResults, setSmartCheckResults] = useState<BasicSmartCheckResponse | null>(null)
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   const onPluginStart = () => {
     setBeeLoaderDone(true)
@@ -41,45 +42,43 @@ const EditorContainer = () => {
   }
 
   const handleSmartCheck = async () => {
-    if (localJson) {
-      const response = await clientAxiosInstance.post<undefined, AxiosResponse<SmartCheckResponse>, SmartCheckRequest>(
-        '/api/check', {
-          template: localJson,
-          checks: [
-            { 
-              "category": SmartCheckCategory.MISSING_ALT_TEXT 
-            },
-            {
-              "category": SmartCheckCategory.OVERAGE_IMAGE_WEIGHT,
-              "limit": 500,
-            },
-            {
-              "category": SmartCheckCategory.MISSING_COPY_LINK,
-            },
-            {
-              "category": SmartCheckCategory.MISSING_IMAGE_LINK,
-            },
-            {
-              "category": SmartCheckCategory.OVERAGE_HTML_WEIGHT,
-              "limit": 5000,
-              "beautified": true
-            },
-          ]
+    if (isPopoverOpen) {
+      setIsPopoverOpen(false)
+    } else {
+      setIsPopoverOpen(true)
+      if (localJson) {
+        const response = await clientAxiosInstance.post<undefined, AxiosResponse<SmartCheckResponse>, SmartCheckRequest>(
+          '/api/check', {
+            template: localJson,
+            checks: [
+              { 
+                "category": SmartCheckCategory.MISSING_ALT_TEXT 
+              },
+              {
+                "category": SmartCheckCategory.OVERAGE_IMAGE_WEIGHT,
+                "limit": 500,
+              },
+              {
+                "category": SmartCheckCategory.MISSING_COPY_LINK,
+              },
+              {
+                "category": SmartCheckCategory.MISSING_IMAGE_LINK,
+              },
+              {
+                "category": SmartCheckCategory.OVERAGE_HTML_WEIGHT,
+                "limit": 5000,
+                "beautified": true
+              },
+            ]
+          }
+        )
+
+        const defaultSmartCheckResult = response.data.find(e => e.language === 'default')
+
+        if (defaultSmartCheckResult) {
+          setSmartCheckResults(defaultSmartCheckResult)
         }
-      )
-
-      const defaultSmartCheckResult = response.data.find(e => e.language === 'default')
-
-      if (defaultSmartCheckResult) {
-        setSmartCheckResults(defaultSmartCheckResult)
       }
-    }
-  }
-
-  const selectSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string, selector: string | null) => {
-    await editorInstance.execCommand(ExecCommands.SELECT, { target: { uuid } })
-    if (selector) {
-      await editorInstance.execCommand(ExecCommands.FOCUS, { target: { selector } })
     }
   }
 
@@ -88,16 +87,24 @@ const EditorContainer = () => {
     await editorInstance.execCommand(ExecCommands.HIGHLIGHT, { target: { uuid } })
   }
 
+  const selectSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string, selector: string | null) => {
+    await editorInstance.execCommand(ExecCommands.SELECT, { target: { uuid } })
+    if (selector) {
+      await editorInstance.execCommand(ExecCommands.FOCUS, { target: { selector } })
+    }
+    setIsPopoverOpen(false)
+  }
+
   return (
     <div className={styles.Container}>
       {
         pluginInstance && (
           <HeaderEditor
+            isPopoverOpen={isPopoverOpen}
             onSmartCheck={handleSmartCheck}
             smartCheckResults={smartCheckResults}
             onTargetClick={(uuid: string, key: string | null) => selectSmartChecksTarget(pluginInstance, uuid, key)}
             onTargetHover={(uuid: string) => hoverSmartChecksTarget(pluginInstance, uuid)}
-            isEditorReady={!!pluginInstance}
           />
         )
       }

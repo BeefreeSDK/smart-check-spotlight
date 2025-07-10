@@ -1,28 +1,16 @@
-import { useEffect, useState } from "react"
 import { Popover } from "react-tiny-popover"
 import styles from './SmartCheckButton.module.scss'
 import { BasicSmartCheckResponse, SmartCheckCategory, SmartChecksStatus } from "@/app/api/check/types"
 
 interface SmartCheckButtonProps {
-   disabled: boolean
-   onSmartCheck: () => void
-   smartCheckResults: BasicSmartCheckResponse | null
-   onTargetClick: (uuid: string, selector: string | null) => Promise<void> | null
-   onTargetHover: (uuid: string) => Promise<void> | null
+  isPopoverOpen: boolean
+  smartCheckResults: BasicSmartCheckResponse | null
+  onClick: () => void
+  onTargetClick?: (uuid: string, selector: string | null) => void
+  onTargetHover?: (uuid: string) => void
 }
 
-export const SmartCheckButton = ({ disabled, onSmartCheck, smartCheckResults, onTargetClick, onTargetHover }: SmartCheckButtonProps) => {
-
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
-
-  const handleOnClick = () => {
-    if (isPopoverOpen) {
-      setIsPopoverOpen(false)
-    } else {
-      setIsPopoverOpen(true)
-      onSmartCheck()
-    }
-  }
+export const SmartCheckButton = ({ isPopoverOpen, smartCheckResults, onClick, onTargetClick, onTargetHover }: SmartCheckButtonProps) => {
 
   const checkStatusToStyle: Record<SmartChecksStatus, string> = {
     [SmartChecksStatus.PASSED]: styles.passed,
@@ -52,16 +40,15 @@ export const SmartCheckButton = ({ disabled, onSmartCheck, smartCheckResults, on
     [SmartCheckCategory.OVERAGE_HTML_WEIGHT]: null,
   }
 
-  const handleOnTargetClick = async (uuid: string, checkType: SmartCheckCategory) => {
+  const handleOnTargetClick = (uuid: string, checkType: SmartCheckCategory) => {
     if (onTargetClick) {
-      await onTargetClick(uuid, checkTypeToSelector[checkType])
-      setIsPopoverOpen(false)
+      onTargetClick(uuid, checkTypeToSelector[checkType])
     }
   }
 
-  const handleOnTargetHover = async (uuid: string) => {
+  const handleOnTargetHover = (uuid: string) => {
     if (onTargetHover) {
-      await onTargetHover(uuid)
+      onTargetHover(uuid)
     }
   }
 
@@ -124,7 +111,7 @@ export const SmartCheckButton = ({ disabled, onSmartCheck, smartCheckResults, on
       positions={['bottom']}
       content={content}
     >
-      <button onClick={handleOnClick} className={styles.smartCheckButton} disabled={disabled}>
+      <button onClick={onClick} className={styles.smartCheckButton}>
         Check
       </button>
     </Popover>

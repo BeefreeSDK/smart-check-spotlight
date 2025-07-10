@@ -5,19 +5,19 @@ import { SmartCheckButton } from '../SmartCheckButton/SmartCheckButton'
 import { BasicSmartCheckResponse } from '@/app/api/check/types'
 
 interface HeaderEditorProps {
-  onSmartCheck: () => void
+  isPopoverOpen: boolean
   smartCheckResults: BasicSmartCheckResponse | null
-  onTargetClick: (uuid: string, selector: string | null) => Promise<void> | null
-  onTargetHover: (uuid: string) => Promise<void> | null
-  isEditorReady: boolean
+  onSmartCheck: () => void
+  onTargetClick?: (uuid: string, selector: string | null) => void
+  onTargetHover?: (uuid: string) => void
 }
 
 const HeaderEditor = ({
-  onSmartCheck,
+  isPopoverOpen,
   smartCheckResults,
+  onSmartCheck,
   onTargetClick,
   onTargetHover,
-  isEditorReady,
 }: HeaderEditorProps) => (
   <header className={styles.HeaderEditor}>
     <div className={styles.headerContent}>
@@ -29,11 +29,11 @@ const HeaderEditor = ({
       
       <div className={styles.RightBlock}>
         <SmartCheckButton 
-          onSmartCheck={onSmartCheck} 
+          isPopoverOpen={isPopoverOpen}
+          onClick={onSmartCheck}
           smartCheckResults={smartCheckResults}
           onTargetClick={onTargetClick}
           onTargetHover={onTargetHover}
-          disabled={!isEditorReady}
         />
       </div>
     </div>
