@@ -10,5 +10,6 @@
 ## Demo Steps
 1. **Make a request to the Smart Check API** with a single check.
 2. **Send the response data to a component** to render the results.
-3. **Set up `onHover` and `onClick` handlers** on suggestions and warnings.
-4. **Enable automatic checks** to trigger validations as content is updated.
+3. **Set up `onHover` handlers** on suggestions and warnings.
+4. **Set up `onClick` handlers** on suggestions and warnings. 
+5. **Enable automatic checks** to trigger validations as content is updated. (If we still have time)
