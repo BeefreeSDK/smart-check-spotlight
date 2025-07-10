@@ -28,7 +28,7 @@ Just one note on secondary languages. The check works in incremental way:
 ## Available checks 
  Complete details on https://docs.beefree.io/beefree-sdk/apis/content-services-api/check
 
-| Check code          | Short description                        | Check Type | For messages | For pages | For rows | Widget checked                    |
+| Check code          | Short description                        | Check Type | For messages | For pages | For rows | Widgets checked                    |
 | ------------------- | ---------------------------------------- | ---------- | ------------ | --------- | -------- | --------------------------------- |
 | missingAltText      | Highlight missing Alt-text in images     | warning    | x            | x         | x        | gif, image, sticker, icon, social |
 | missingImageLink    | Highlight missing link on images         | warning    | x            | x         | x        | gif, image, sticker, icon         |
@@ -44,6 +44,6 @@ You create your list of checks!
 
 
 ## Stay tuned
-Other checks will be released and **we are open to define some of them with you**
+Other checks will be released and **we are open to define some of them with you**.
 
 
