@@ -2,7 +2,6 @@ import axios, {
   AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig,
 } from 'axios'
 import { v4 as uuidv4 } from 'uuid'
-import { LocalStorage } from '@/helpers/storage-utils'
 import mem from 'mem'
 
 // CustomAxios Interfaces are needed by TS to manage custom props on config
@@ -35,9 +34,12 @@ const bearerInterceptor = (config: any) => {
     return config
   }
 
-  const token = LocalStorage.get(process.env.NEXT_PUBLIC_BEEFREE_ACCESS_TOKEN_NAME) ?? ''
-  const uid = LocalStorage.get(process.env.NEXT_PUBLIC_BEEFREE_UID,
-    () => `${process.env.NEXT_PUBLIC_BEEFREE_UID_PREFIX}-${uuidv4()}`)
+  const token = localStorage.getItem(process.env.NEXT_PUBLIC_BEEFREE_ACCESS_TOKEN_NAME)
+  const uid = localStorage.getItem(process.env.NEXT_PUBLIC_BEEFREE_UID)
+  
+  if (!uid) {
+    localStorage.setItem(process.env.NEXT_PUBLIC_BEEFREE_UID, `${process.env.NEXT_PUBLIC_BEEFREE_UID_PREFIX}-${uuidv4()}`)
+  }
 
   return {
   ...config,
@@ -83,7 +85,7 @@ const responseInterceptor = async (response: AxiosResponse) => {
     const { access_token } = response.data
     const tokenName = process.env.NEXT_PUBLIC_BEEFREE_ACCESS_TOKEN_NAME
     if (access_token && tokenName) {
-      LocalStorage.set(tokenName, access_token)
+      localStorage.setItem(tokenName, access_token)
     }
   }
   return response

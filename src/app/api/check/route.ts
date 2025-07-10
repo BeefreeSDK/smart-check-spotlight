@@ -6,7 +6,7 @@ export const POST = async (request: NextRequest) => {
   try {
     const { template, checks } = await request.json()
 
-    const response = await axios.post<SmartCheckRequest, AxiosResponse<SmartCheckResponse>>(
+    const response = await axios.post<SmartCheckResponse, AxiosResponse<SmartCheckResponse>, SmartCheckRequest>(
       process.env.NEXT_PUBLIC_CONTENT_SERVICE_API!,
       {
         template,
