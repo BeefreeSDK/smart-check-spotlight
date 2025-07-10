@@ -28,17 +28,17 @@ Just one note on secondary languages. The check works in incremental way:
 ## Available checks 
  Complete details on https://docs.beefree.io/beefree-sdk/apis/content-services-api/check
 
-| Check               | Short descr. | Type    | For messages | For pages | For rows | Work on                   |
-| ------------------- | ------------ | ------- | ------------ | --------- | -------- | ------------------------- |
-| missingAltText      |              | warning | x            | x         | x        | gif, image, sticker, icon |
-| missingImageLink    |              |         | x            | x         | x        | gif, image, sticker, icon |
-| missingCopyLink     |              |         | x            | x         | x        |                           |
-| overageImageWeight  |              | warning | x            | x         | x        |                           |
-| overageHtmlWeight   |              |         | x            | -         | -        |                           |
-| missingDetailsEmail |              |         | x            | -         | -        |                           |
-| missingDetailsPage  |              |         | -            | x         | -        |                           |
+| Check code          | Short description                        | Check Type | For messages | For pages | For rows | Widget checked                    |
+| ------------------- | ---------------------------------------- | ---------- | ------------ | --------- | -------- | --------------------------------- |
+| missingAltText      | Highlight missing Alt-text in images     | warning    | x            | x         | x        | gif, image, sticker, icon, social |
+| missingImageLink    | Highlight missing link on images         | warning    | x            | x         | x        | gif, image, sticker, icon         |
+| missingCopyLink     | Highlight missing link on copy           | warning    | x            | x         | x        | button, social, menu              |
+| overageImageWeight  | Highlight image overage weight           | suggestion | x            | x         | x        | gif, image, sticker, icon, social |
+| overageHtmlWeight   | Highlight HTML overage size              | warning    | x            | -         | -        | -                                 |
+| missingDetailsEmail | Highlight missing subject and pre header | suggestion | x            | -         | -        | -                                 |
+| missingDetailsPage  | Highlight missing description and title  | Suggestion | -            | x         | -        | -                                 |
 
-If warning and suggestion, the result status is warning.
+If warning and suggestion, the general status is warning.
 
 You create your list of checks!
 
