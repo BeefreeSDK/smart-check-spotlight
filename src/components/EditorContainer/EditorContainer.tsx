@@ -37,62 +37,22 @@ const EditorContainer = () => {
     }
   }
 
-  const handleOnChange = (json: string) => {
-    setLocalJson(JSON.parse(json))
-  }
-
   const handleSmartCheck = async () => {
-    if (isPopoverOpen) {
-      setIsPopoverOpen(false)
-    } else {
-      setIsPopoverOpen(true)
-      if (localJson) {
-        const response = await clientAxiosInstance.post<undefined, AxiosResponse<SmartCheckResponse>, SmartCheckRequest>(
-          '/api/check', {
-            template: localJson,
-            checks: [
-              { 
-                "category": SmartCheckCategory.MISSING_ALT_TEXT 
-              },
-              {
-                "category": SmartCheckCategory.OVERAGE_IMAGE_WEIGHT,
-                "limit": 500,
-              },
-              {
-                "category": SmartCheckCategory.MISSING_COPY_LINK,
-              },
-              {
-                "category": SmartCheckCategory.MISSING_IMAGE_LINK,
-              },
-              {
-                "category": SmartCheckCategory.OVERAGE_HTML_WEIGHT,
-                "limit": 5000,
-                "beautified": true
-              },
-            ]
-          }
-        )
-
-        const defaultSmartCheckResult = response.data.find(e => e.language === 'default')
-
-        if (defaultSmartCheckResult) {
-          setSmartCheckResults(defaultSmartCheckResult)
-        }
-      }
-    }
+    /* STEP 1: Make a request to the Smart Check API with a single check. */ 
+    /* STEP 2: Send the response data to a component SmartCheckButton to render the results. */
   }
 
   const hoverSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string) => {
-    await editorInstance.execCommand(ExecCommands.SCROLL, { target: { uuid } })
-    await editorInstance.execCommand(ExecCommands.HIGHLIGHT, { target: { uuid } })
+    /* STEP 3: Set up `onHover` handlers on suggestions and warnings. */
   }
 
   const selectSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string, selector: string | null) => {
-    await editorInstance.execCommand(ExecCommands.SELECT, { target: { uuid } })
-    if (selector) {
-      await editorInstance.execCommand(ExecCommands.FOCUS, { target: { selector } })
-    }
-    setIsPopoverOpen(false)
+    /* STEP 4: Set up `onClick` handlers on suggestions and warnings. */
+  }
+
+  const handleOnChange = (json: string) => {
+    setLocalJson(JSON.parse(json))
+    /* STEP 5: Enable automatic checks to trigger validations as content is updated. */
   }
 
   return (
