@@ -1,12 +1,12 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { NextRequest, NextResponse } from 'next/server'
-import { SmartCheckRequest, SmartCheckResponse } from './types'
+import { CheckAPIRequest, CheckAPIResponse } from './types'
 
 export const POST = async (request: NextRequest) => {
   try {
     const { template, checks } = await request.json()
 
-    const response = await axios.post<SmartCheckResponse, AxiosResponse<SmartCheckResponse>, SmartCheckRequest>(
+    const response = await axios.post<CheckAPIResponse, AxiosResponse<CheckAPIResponse>, CheckAPIRequest>(
       process.env.NEXT_PUBLIC_CONTENT_SERVICE_API,
       {
         template,

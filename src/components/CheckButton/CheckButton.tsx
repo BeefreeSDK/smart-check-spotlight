@@ -1,46 +1,46 @@
 import { Popover } from "react-tiny-popover"
-import styles from './SmartCheckButton.module.scss'
-import { BasicSmartCheckResponse, SmartCheckCategory, SmartChecksStatus } from "@/app/api/check/types"
+import styles from './CheckButton.module.scss'
+import { BasicCheckAPIResponse, CheckAPICategory, CheckAPIStatus } from "@/app/api/check/types"
 
-interface SmartCheckButtonProps {
+interface CheckButtonProps {
   isPopoverOpen: boolean
-  smartCheckResults: BasicSmartCheckResponse | null
+  checkResults: BasicCheckAPIResponse | null
   onClick?: () => void
   onTargetClick?: (uuid: string, selector: string | null) => void
   onTargetHover?: (uuid: string) => void
 }
 
-export const SmartCheckButton = ({ isPopoverOpen, smartCheckResults, onClick, onTargetClick, onTargetHover }: SmartCheckButtonProps) => {
+export const CheckButton = ({ isPopoverOpen, checkResults, onClick, onTargetClick, onTargetHover }: CheckButtonProps) => {
 
-  const checkStatusToStyle: Record<SmartChecksStatus, string> = {
-    [SmartChecksStatus.PASSED]: styles.passed,
-    [SmartChecksStatus.WARNING]: styles.warning,
-    [SmartChecksStatus.SUGGESTION]: styles.suggestion,
+  const checkStatusToStyle: Record<CheckAPIStatus, string> = {
+    [CheckAPIStatus.PASSED]: styles.passed,
+    [CheckAPIStatus.WARNING]: styles.warning,
+    [CheckAPIStatus.SUGGESTION]: styles.suggestion,
   }
 
-  const checkStatusToIcon: Record<SmartChecksStatus, string> = {
-    [SmartChecksStatus.PASSED]: "✅",
-    [SmartChecksStatus.WARNING]: "⚠️",
-    [SmartChecksStatus.SUGGESTION]: "💡",
+  const checkStatusToIcon: Record<CheckAPIStatus, string> = {
+    [CheckAPIStatus.PASSED]: "✅",
+    [CheckAPIStatus.WARNING]: "⚠️",
+    [CheckAPIStatus.SUGGESTION]: "💡",
   }
 
-  const checkTypeToLabel: Record<SmartCheckCategory, string> = {
-    [SmartCheckCategory.MISSING_ALT_TEXT]: "Missing Alt Text",
-    [SmartCheckCategory.MISSING_IMAGE_LINK]: "Missing Image Link",
-    [SmartCheckCategory.MISSING_COPY_LINK]: "Missing Copy Link",
-    [SmartCheckCategory.OVERAGE_IMAGE_WEIGHT]: "Image Weight Over Limit",
-    [SmartCheckCategory.OVERAGE_HTML_WEIGHT]: "HTML Weight Over Limit",
+  const checkTypeToLabel: Record<CheckAPICategory, string> = {
+    [CheckAPICategory.MISSING_ALT_TEXT]: "Missing Alt Text",
+    [CheckAPICategory.MISSING_IMAGE_LINK]: "Missing Image Link",
+    [CheckAPICategory.MISSING_COPY_LINK]: "Missing Copy Link",
+    [CheckAPICategory.OVERAGE_IMAGE_WEIGHT]: "Image Weight Over Limit",
+    [CheckAPICategory.OVERAGE_HTML_WEIGHT]: "HTML Weight Over Limit",
   }
 
-  const checkTypeToSelector: Record<SmartCheckCategory, string | null> = {
-    [SmartCheckCategory.MISSING_ALT_TEXT]: '.alternate-txt--cs',
-    [SmartCheckCategory.MISSING_IMAGE_LINK]: '.href-container--cs',
-    [SmartCheckCategory.MISSING_COPY_LINK]: '.href-container--cs',
-    [SmartCheckCategory.OVERAGE_IMAGE_WEIGHT]: null,
-    [SmartCheckCategory.OVERAGE_HTML_WEIGHT]: null,
+  const checkTypeToSelector: Record<CheckAPICategory, string | null> = {
+    [CheckAPICategory.MISSING_ALT_TEXT]: '.alternate-txt--cs',
+    [CheckAPICategory.MISSING_IMAGE_LINK]: '.href-container--cs',
+    [CheckAPICategory.MISSING_COPY_LINK]: '.href-container--cs',
+    [CheckAPICategory.OVERAGE_IMAGE_WEIGHT]: null,
+    [CheckAPICategory.OVERAGE_HTML_WEIGHT]: null,
   }
 
-  const handleOnTargetClick = (uuid: string, checkType: SmartCheckCategory) => {
+  const handleOnTargetClick = (uuid: string, checkType: CheckAPICategory) => {
     if (onTargetClick) {
       onTargetClick(uuid, checkTypeToSelector[checkType])
     }
@@ -55,22 +55,22 @@ export const SmartCheckButton = ({ isPopoverOpen, smartCheckResults, onClick, on
   const content = (
     <div className={styles.popoverContent}>
       <div className={styles.header}>
-        <h3>Smart Check Results</h3>
-        {smartCheckResults && (
+        <h3>Check Results</h3>
+        {checkResults && (
           <div className={styles.summary}>
             <span className={styles.summaryItem}>
-              <span className={styles.warning}>⚠️ {smartCheckResults.checksWarningCount}</span>
+              <span className={styles.warning}>⚠️ {checkResults.checksWarningCount}</span>
             </span>
             <span className={styles.summaryItem}>
-              <span className={styles.suggestion}>💡 {smartCheckResults.checksSuggestionCount}</span>
+              <span className={styles.suggestion}>💡 {checkResults.checksSuggestionCount}</span>
             </span>
           </div>
         )}
       </div>
       
-      {smartCheckResults ? (
+      {checkResults ? (
         <div className={styles.checksList}>
-          {smartCheckResults.checks.map((check, index) => (
+          {checkResults.checks.map((check, index) => (
             <div key={index} className={`${styles.checkItem} ${checkStatusToStyle[check.checkStatus]}`}>
               <div className={styles.checkHeader}>
                 <span className={styles.statusIcon}>{checkStatusToIcon[check.checkStatus]}</span>
@@ -99,7 +99,7 @@ export const SmartCheckButton = ({ isPopoverOpen, smartCheckResults, onClick, on
       ) : (
         <div className={styles.loading}>
           <div className={styles.spinner}></div>
-          <p>Running smart checks...</p>
+          <p>Running checks...</p>
         </div>
       )}
     </div>
@@ -111,7 +111,7 @@ export const SmartCheckButton = ({ isPopoverOpen, smartCheckResults, onClick, on
       positions={['bottom']}
       content={content}
     >
-      <button onClick={onClick} className={styles.smartCheckButton}>
+      <button onClick={onClick} className={styles.CheckButton}>
         Check
       </button>
     </Popover>

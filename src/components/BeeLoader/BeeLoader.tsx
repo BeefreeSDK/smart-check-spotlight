@@ -16,7 +16,7 @@ const Loader = ({ show }: LoaderProps) => (
               <div className={styles.spinnerRing}></div>
             </div>
             <div className={styles.loadingText}>
-              <h3>Smart Check Spotlight - Loading template...</h3>
+              <h3>Check API Spotlight - Loading template...</h3>
             </div>
           </div>
         </div>

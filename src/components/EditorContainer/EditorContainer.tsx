@@ -8,13 +8,13 @@ import { IEntityContentJson } from '@beefree.io/sdk/dist/types/bee'
 import { Loader } from '../BeeLoader/BeeLoader'
 import styles from '@/components/EditorContainer/EditorContainer.module.scss'
 import BeePlugin from '@beefree.io/sdk'
-import { BasicSmartCheckResponse, SmartCheckCategory, SmartCheckRequest, SmartCheckResponse } from '@/app/api/check/types'
+import { BasicCheckAPIResponse, CheckAPICategory, CheckAPIRequest, CheckAPIResponse } from '@/app/api/check/types'
 
 const EditorContainer = () => {
   const [pluginInstance, setPluginInstance] = useState<BeePlugin | null>(null)
   const [beeLoaderDone, setBeeLoaderDone] = useState(false)
   const [localJson, setLocalJson] = useState<IEntityContentJson | null>(null)
-  const [smartCheckResults, setSmartCheckResults] = useState<BasicSmartCheckResponse | null>(null)
+  const [checkResults, setCheckResults] = useState<BasicCheckAPIResponse | null>(null)
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   const onPluginStart = () => {
@@ -41,8 +41,8 @@ const EditorContainer = () => {
 
   /* STEP -1 Show env variables */
   /* STEP 0: The api call on the backend */
-  /* STEP 1: Make a request to the Smart Check API with a single check. */ 
-  /* STEP 2: Send the response data to a component SmartCheckButton to render the results. */
+  /* STEP 1: Make a request to the Check API with a single check. */ 
+  /* STEP 2: Send the response data to a component CheckButton to render the results. */
   /* STEP 3: Set up `onHover` handlers on suggestions and warnings. */
   /* STEP 4: Set up `onClick` handlers on suggestions and warnings. */
   /* STEP 5: Enable automatic checks to trigger validations as content is updated. */
@@ -53,7 +53,7 @@ const EditorContainer = () => {
         pluginInstance && (
           <HeaderEditor
             isPopoverOpen={isPopoverOpen}
-            smartCheckResults={smartCheckResults}
+            checkResults={checkResults}
           />
         )
       }

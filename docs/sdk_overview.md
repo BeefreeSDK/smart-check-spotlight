@@ -1,4 +1,4 @@
-# Smart Check: SDK API overview
+# Check API overview
 
 **You need the Beefree SDK API KEY**
 

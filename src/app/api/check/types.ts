@@ -2,7 +2,7 @@ import { IEntityContentJson } from "@beefree.io/sdk/dist/types/bee";
 
 /* ========== COMMONS ========== */
 
-export enum SmartCheckCategory {
+export enum CheckAPICategory {
   MISSING_ALT_TEXT = 'missingAltText',
   MISSING_IMAGE_LINK = 'missingImageLink',
   MISSING_COPY_LINK = 'missingCopyLink',
@@ -12,38 +12,38 @@ export enum SmartCheckCategory {
 
 /* ========== REQUEST TYPES ========== */
 
-export type SmartCheckRequest = {
+export type CheckAPIRequest = {
   template: IEntityContentJson
   checks: ({
-    category: SmartCheckCategory.OVERAGE_IMAGE_WEIGHT,
+    category: CheckAPICategory.OVERAGE_IMAGE_WEIGHT,
     limit: number
   } | {
-    category: SmartCheckCategory.OVERAGE_HTML_WEIGHT,
+    category: CheckAPICategory.OVERAGE_HTML_WEIGHT,
     limit: number,
     beautified: boolean
   } | {
     category: (
-      SmartCheckCategory.MISSING_ALT_TEXT 
-      | SmartCheckCategory.MISSING_IMAGE_LINK 
-      | SmartCheckCategory.MISSING_COPY_LINK
+      CheckAPICategory.MISSING_ALT_TEXT 
+      | CheckAPICategory.MISSING_IMAGE_LINK 
+      | CheckAPICategory.MISSING_COPY_LINK
     )
   })[];
 }
 
 /* ========== RESPONSE TYPES ========== */
 
-interface SmartCheckBase {
+interface CheckAPIBase {
   uuid: string | 'default'
   widgetType: string | 'default'
   widgetLabel: string | 'default'
 }
 
 type CheckTypeToTarget = {
-  [SmartCheckCategory.MISSING_ALT_TEXT]: SmartCheckBase
-  [SmartCheckCategory.MISSING_COPY_LINK]: SmartCheckBase
-  [SmartCheckCategory.MISSING_IMAGE_LINK]: SmartCheckBase
-  [SmartCheckCategory.OVERAGE_IMAGE_WEIGHT]: SmartCheckBase & { weight: number }
-  [SmartCheckCategory.OVERAGE_HTML_WEIGHT]: SmartCheckBase & { weight: number, beautified: boolean }
+  [CheckAPICategory.MISSING_ALT_TEXT]: CheckAPIBase
+  [CheckAPICategory.MISSING_COPY_LINK]: CheckAPIBase
+  [CheckAPICategory.MISSING_IMAGE_LINK]: CheckAPIBase
+  [CheckAPICategory.OVERAGE_IMAGE_WEIGHT]: CheckAPIBase & { weight: number }
+  [CheckAPICategory.OVERAGE_HTML_WEIGHT]: CheckAPIBase & { weight: number, beautified: boolean }
 }
 
 type CheckTarget = {
@@ -53,17 +53,17 @@ type CheckTarget = {
   };
 }[keyof CheckTypeToTarget]
 
-export enum SmartChecksStatus {
+export enum CheckAPIStatus {
   WARNING = 'warning',
   SUGGESTION = 'suggestion',
   PASSED = 'passed',
 }
 
-type SmartChecksType = {
-  type: SmartCheckCategory
+type CheckAPIType = {
+  type: CheckAPICategory
   targets: CheckTarget['targets']
   targetsCount: number
-  checkStatus: SmartChecksStatus
+  checkStatus: CheckAPIStatus
   limit?: number
   evaluated?: number
   errored?: boolean
@@ -72,14 +72,14 @@ type SmartChecksType = {
   displayConditions?: boolean
 }
 
-export type BasicSmartCheckResponse = {
+export type BasicCheckAPIResponse = {
   language: 'default' | string
-  checks: SmartChecksType[]
-  status: SmartChecksStatus
+  checks: CheckAPIType[]
+  status: CheckAPIStatus
   checksWarningCount: number      // warnings
   checksSuggestionCount: number   // suggestions
   checksFailedCount: number       // warnings + suggestions
   dateTime: Date
 }
 
-export type SmartCheckResponse = BasicSmartCheckResponse[]
+export type CheckAPIResponse = BasicCheckAPIResponse[]

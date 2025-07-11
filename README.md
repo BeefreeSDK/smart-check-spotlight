@@ -1,6 +1,6 @@
-# Smart Check Spotlight
+# Check Api Spotlight
 
-A demo spotlight session to show how the smart checker works.
+A demo spotlight session to show how the check API works.
 
 ## Getting Started
 
@@ -21,7 +21,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Features
 
 - Interactive editor powered by Beefree SDK
-- Smart check functionality demonstration
+- Check API functionality demonstration
 - Real-time preview and validation
 - Template management system
 
