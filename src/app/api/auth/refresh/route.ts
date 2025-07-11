@@ -1,14 +1,22 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { NextRequest, NextResponse } from 'next/server'
 
-// call bee-auth to refresh
 export const POST = async (request: NextRequest) => {
-  const authHeader = String(request.headers.get('Authorization') ?? '')
-  const token = authHeader.startsWith('Bearer ') ? authHeader.substring(7, authHeader.length) : null
-  return axios.post(process.env.NEXT_PUBLIC_BEEPLUGIN_AUTH_REFRESH, { token })
-    .then(response => NextResponse.json(response.data))
-    .catch(error => NextResponse.json(
-      { error: error.message, data: error.response.data ?? error.response.statusText },
-      { status: error.response.status },
-    ))
+  try {
+    const authHeader = String(request.headers.get('Authorization') ?? '')
+    const token = authHeader.startsWith('Bearer ') ? authHeader.substring(7, authHeader.length) : null
+    const response = await axios.post(process.env.NEXT_PUBLIC_BEEPLUGIN_AUTH_REFRESH, { token })
+    return NextResponse.json(response.data)
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError
+      const status = axiosError.response?.status ?? 500
+      const data = axiosError.response?.data ?? { error: 'Unknown error from server' }
+      return NextResponse.json(data, { status })
+    }
+    return NextResponse.json(
+      { error: 'An unexpected error occurred', message: (error as Error).message },
+      { status: 500 }
+    )
+  }
 }

@@ -1,9 +1,9 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { NextRequest, NextResponse } from 'next/server'
 
-// call bee-auth to login
 export const POST = async (request: NextRequest) => {
-  const { template_type } = await request.json()
+  try {
+    const { template_type } = await request.json()
   const uid = request.headers.get('uid')
 
   if (!uid) {
@@ -19,14 +19,24 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ error: 'template_type must be either email or page' }, { status: 401 })
   }
 
-  return axios.post(process.env.NEXT_PUBLIC_BEEPLUGIN_AUTH_ENDPOINT, {
+  const response = await axios.post(process.env.NEXT_PUBLIC_BEEPLUGIN_AUTH_ENDPOINT, {
     uid,
     client_id: process.env.BEEPLUGIN_AUTH_EMAIL_CLIENT_ID,
     client_secret: process.env.BEEPLUGIN_AUTH_EMAIL_CLIENT_SECRET,
   })
-    .then(response => NextResponse.json(response.data))
-    .catch(error => NextResponse.json(
-      { error: error.message, data: error.response.data ?? error.response.statusText },
-      { status: error.response.status },
-    ))
+
+  return NextResponse.json(response.data)
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError
+      const status = axiosError.response?.status ?? 500
+      const data = axiosError.response?.data ?? { error: 'Unknown error from server' }
+      return NextResponse.json(data, { status })
+    }
+
+    return NextResponse.json(
+      { error: 'An unexpected error occurred', message: (error as Error).message },
+      { status: 500 }
+    )
+  }
 }

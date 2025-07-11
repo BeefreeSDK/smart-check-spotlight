@@ -3,8 +3,8 @@ import styles from './CheckButton.module.scss'
 import { BasicCheckAPIResponse, CheckAPICategory, CheckAPIStatus } from "@/app/api/check/types"
 
 interface CheckButtonProps {
-  isPopoverOpen: boolean
-  checkResults: BasicCheckAPIResponse | null
+  isPopoverOpen?: boolean
+  checkResults?: BasicCheckAPIResponse
   onClick?: () => void
   onTargetClick?: (uuid: string, selector: string | null) => void
   onTargetHover?: (uuid: string) => void
@@ -107,7 +107,7 @@ export const CheckButton = ({ isPopoverOpen, checkResults, onClick, onTargetClic
 
   return (
     <Popover
-      isOpen={isPopoverOpen}
+      isOpen={!!isPopoverOpen}
       positions={['bottom']}
       content={content}
     >

@@ -20,12 +20,12 @@ const Editor = ({
   onChange,
   onStart,
 }: EditorProps) => {
-  const pluginStarted = useRef(false)
+  const bootstrapped = useRef(false)
   const beeConfiguration = getBeeConfiguration({ onChange, onStart })
 
   useEffect(() => {
-    if (!pluginStarted.current && template) {
-      pluginStarted.current = true
+    if (!bootstrapped.current && template) {
+      bootstrapped.current = true
       void clientAxiosInstance.post('api/auth/login', { template_type: 'email' })
         .then(({ data }: { data: IToken }) => {
           const beeInstance = new BeePlugin(data, {

@@ -8,14 +8,11 @@ import { IEntityContentJson } from '@beefree.io/sdk/dist/types/bee'
 import { Loader } from '../BeeLoader/BeeLoader'
 import styles from '@/components/EditorContainer/EditorContainer.module.scss'
 import BeePlugin from '@beefree.io/sdk'
-import { BasicCheckAPIResponse, CheckAPICategory, CheckAPIRequest, CheckAPIResponse } from '@/app/api/check/types'
 
 const EditorContainer = () => {
+  const [localJson, setLocalJson] = useState<IEntityContentJson | null>(null)
   const [pluginInstance, setPluginInstance] = useState<BeePlugin | null>(null)
   const [beeLoaderDone, setBeeLoaderDone] = useState(false)
-  const [localJson, setLocalJson] = useState<IEntityContentJson | null>(null)
-  const [checkResults, setCheckResults] = useState<BasicCheckAPIResponse | null>(null)
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   const onPluginStart = () => {
     setBeeLoaderDone(true)
@@ -39,37 +36,30 @@ const EditorContainer = () => {
     setLocalJson(JSON.parse(json))  
   }
 
-  /* STEP -1 Show env variables */
-  /* STEP 0: The api call on the backend */
-  /* STEP 1: Make a request to the Check API with a single check. */ 
-  /* STEP 2: Send the response data to a component CheckButton to render the results. */
-  /* STEP 3: Set up `onHover` handlers on suggestions and warnings. */
-  /* STEP 4: Set up `onClick` handlers on suggestions and warnings. */
-  /* STEP 5: Enable automatic checks to trigger validations as content is updated. */
+  /* STEP 1: The env variables */
+  /* STEP 2: The api call on the backend */
+  /* STEP 3: Make a request to the Check API with a single check. */ 
+  /* STEP 4: Send the response data to a component CheckButton to render the results. */
+  /* STEP 5: Set up `onHover` handlers on suggestions and warnings. */
+  /* STEP 6: Set up `onClick` handlers on suggestions and warnings. */
+  /* STEP 7: Enable automatic checks to trigger validations as content is updated. */
 
   return (
     <div className={styles.Container}>
-      {
-        pluginInstance && (
-          <HeaderEditor
-            isPopoverOpen={isPopoverOpen}
-            checkResults={checkResults}
-          />
-        )
-      }
-      {
-        localJson ? (
+      {pluginInstance && <HeaderEditor />}
+      {localJson ? (
+        <>
+          <Loader show={!beeLoaderDone} />
           <Editor
             onInstanceCreated={setPluginInstance}
-            onStart={onPluginStart}
             template={localJson}
             onChange={handleOnChange}
+            onStart={onPluginStart}
           />
-        ) : (
-          <TemplateSelector onLoadTemplate={handleLoadTemplate} />
-        )
-      }
-      <Loader show={!!localJson && !beeLoaderDone} />
+        </>
+      ) : (
+        <TemplateSelector onLoadTemplate={handleLoadTemplate} />
+      )}
     </div>
   )
 }

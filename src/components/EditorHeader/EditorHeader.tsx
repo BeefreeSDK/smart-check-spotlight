@@ -5,8 +5,8 @@ import { CheckButton } from '../CheckButton/CheckButton'
 import { BasicCheckAPIResponse } from '@/app/api/check/types'
 
 interface HeaderEditorProps {
-  isPopoverOpen: boolean
-  checkResults: BasicCheckAPIResponse | null
+  isPopoverOpen?: boolean
+  checkResults?: BasicCheckAPIResponse
   onCheck?: () => void
   onTargetClick?: (uuid: string, selector: string | null) => void
   onTargetHover?: (uuid: string) => void

@@ -5,7 +5,6 @@ import { CheckAPIRequest, CheckAPIResponse } from './types'
 export const POST = async (request: NextRequest) => {
   try {
     const { template, checks } = await request.json()
-
     const response = await axios.post<CheckAPIResponse, AxiosResponse<CheckAPIResponse>, CheckAPIRequest>(
       process.env.NEXT_PUBLIC_CONTENT_SERVICE_API,
       {
@@ -25,7 +24,6 @@ export const POST = async (request: NextRequest) => {
       const axiosError = error as AxiosError
       const status = axiosError.response?.status ?? 500
       const data = axiosError.response?.data ?? { error: 'Unknown error from server' }
-
       return NextResponse.json(data, { status })
     }
 
