@@ -1,8 +1,9 @@
-'use client'
+"use client"
 
-import styles from '@/components/EditorHeader/EditorHeader.module.scss'
-import { CheckButton } from '../CheckButton/CheckButton'
-import { BasicCheckAPIResponse } from '@/app/api/check/types'
+import { BasicCheckAPIResponse } from "@/app/api/check/types"
+import styles from "@/components/EditorHeader/EditorHeader.module.scss"
+
+import { CheckButton } from "../CheckButton/CheckButton"
 
 interface HeaderEditorProps {
   isPopoverOpen?: boolean
@@ -17,7 +18,7 @@ const HeaderEditor = ({
   checkResults,
   onCheck,
   onTargetClick,
-  onTargetHover,
+  onTargetHover
 }: HeaderEditorProps) => (
   <header className={styles.HeaderEditor}>
     <div className={styles.headerContent}>
@@ -26,9 +27,9 @@ const HeaderEditor = ({
           <span>Check API Spotlight</span>
         </div>
       </div>
-      
+
       <div className={styles.RightBlock}>
-        <CheckButton 
+        <CheckButton
           isPopoverOpen={isPopoverOpen}
           onClick={onCheck}
           checkResults={checkResults}
@@ -38,6 +39,6 @@ const HeaderEditor = ({
       </div>
     </div>
   </header>
-  )
+)
 
 export { HeaderEditor }

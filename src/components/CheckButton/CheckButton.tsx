@@ -1,6 +1,12 @@
 import { Popover } from "react-tiny-popover"
-import styles from './CheckButton.module.scss'
-import { BasicCheckAPIResponse, CheckAPICategory, CheckAPIStatus } from "@/app/api/check/types"
+
+import {
+  BasicCheckAPIResponse,
+  CheckAPICategory,
+  CheckAPIStatus
+} from "@/app/api/check/types"
+
+import styles from "./CheckButton.module.scss"
 
 interface CheckButtonProps {
   isPopoverOpen?: boolean
@@ -10,18 +16,23 @@ interface CheckButtonProps {
   onTargetHover?: (uuid: string) => void
 }
 
-export const CheckButton = ({ isPopoverOpen, checkResults, onClick, onTargetClick, onTargetHover }: CheckButtonProps) => {
-
+export const CheckButton = ({
+  isPopoverOpen,
+  checkResults,
+  onClick,
+  onTargetClick,
+  onTargetHover
+}: CheckButtonProps) => {
   const checkStatusToStyle: Record<CheckAPIStatus, string> = {
     [CheckAPIStatus.PASSED]: styles.passed,
     [CheckAPIStatus.WARNING]: styles.warning,
-    [CheckAPIStatus.SUGGESTION]: styles.suggestion,
+    [CheckAPIStatus.SUGGESTION]: styles.suggestion
   }
 
   const checkStatusToIcon: Record<CheckAPIStatus, string> = {
     [CheckAPIStatus.PASSED]: "✅",
     [CheckAPIStatus.WARNING]: "⚠️",
-    [CheckAPIStatus.SUGGESTION]: "💡",
+    [CheckAPIStatus.SUGGESTION]: "💡"
   }
 
   const checkTypeToLabel: Record<CheckAPICategory, string> = {
@@ -29,15 +40,15 @@ export const CheckButton = ({ isPopoverOpen, checkResults, onClick, onTargetClic
     [CheckAPICategory.MISSING_IMAGE_LINK]: "Missing Image Link",
     [CheckAPICategory.MISSING_COPY_LINK]: "Missing Copy Link",
     [CheckAPICategory.OVERAGE_IMAGE_WEIGHT]: "Image Weight Over Limit",
-    [CheckAPICategory.OVERAGE_HTML_WEIGHT]: "HTML Weight Over Limit",
+    [CheckAPICategory.OVERAGE_HTML_WEIGHT]: "HTML Weight Over Limit"
   }
 
   const checkTypeToSelector: Record<CheckAPICategory, string | null> = {
-    [CheckAPICategory.MISSING_ALT_TEXT]: '.alternate-txt--cs',
-    [CheckAPICategory.MISSING_IMAGE_LINK]: '.href-container--cs',
-    [CheckAPICategory.MISSING_COPY_LINK]: '.href-container--cs',
+    [CheckAPICategory.MISSING_ALT_TEXT]: ".alternate-txt--cs",
+    [CheckAPICategory.MISSING_IMAGE_LINK]: ".href-container--cs",
+    [CheckAPICategory.MISSING_COPY_LINK]: ".href-container--cs",
     [CheckAPICategory.OVERAGE_IMAGE_WEIGHT]: null,
-    [CheckAPICategory.OVERAGE_HTML_WEIGHT]: null,
+    [CheckAPICategory.OVERAGE_HTML_WEIGHT]: null
   }
 
   const handleOnTargetClick = (uuid: string, checkType: CheckAPICategory) => {
@@ -59,35 +70,50 @@ export const CheckButton = ({ isPopoverOpen, checkResults, onClick, onTargetClic
         {checkResults && (
           <div className={styles.summary}>
             <span className={styles.summaryItem}>
-              <span className={styles.warning}>⚠️ {checkResults.checksWarningCount}</span>
+              <span className={styles.warning}>
+                ⚠️ {checkResults.checksWarningCount}
+              </span>
             </span>
             <span className={styles.summaryItem}>
-              <span className={styles.suggestion}>💡 {checkResults.checksSuggestionCount}</span>
+              <span className={styles.suggestion}>
+                💡 {checkResults.checksSuggestionCount}
+              </span>
             </span>
           </div>
         )}
       </div>
-      
+
       {checkResults ? (
         <div className={styles.checksList}>
-          {checkResults.checks.map((check, index) => (
-            <div key={index} className={`${styles.checkItem} ${checkStatusToStyle[check.checkStatus]}`}>
+          {checkResults.checks.map((check) => (
+            <div
+              key={check.type}
+              className={`${styles.checkItem} ${checkStatusToStyle[check.checkStatus]}`}
+            >
               <div className={styles.checkHeader}>
-                <span className={styles.statusIcon}>{checkStatusToIcon[check.checkStatus]}</span>
-                <span className={styles.checkType}>{checkTypeToLabel[check.type]}</span>
-                <span className={styles.targetsCount}>({check.targetsCount})</span>
+                <span className={styles.statusIcon}>
+                  {checkStatusToIcon[check.checkStatus]}
+                </span>
+                <span className={styles.checkType}>
+                  {checkTypeToLabel[check.type]}
+                </span>
+                <span className={styles.targetsCount}>
+                  ({check.targetsCount})
+                </span>
               </div>
-           
+
               {check.targets && check.targets.length > 0 && (
                 <div className={styles.targetsList}>
-                  {check.targets.map((target, targetIndex) => (
+                  {check.targets.map((target) => (
                     <button
-                      key={targetIndex}
+                      key={target.uuid}
                       className={styles.targetButton}
-                      onClick={() => handleOnTargetClick(target.uuid, check.type)}
+                      onClick={() =>
+                        handleOnTargetClick(target.uuid, check.type)
+                      }
                       onMouseEnter={() => handleOnTargetHover(target.uuid)}
                     >
-                      {target.widgetType || 'Unknown Element'} 
+                      {target.widgetType || "Unknown Element"}
                       <span className={styles.targetUuid}>({target.uuid})</span>
                     </button>
                   ))}
@@ -106,11 +132,7 @@ export const CheckButton = ({ isPopoverOpen, checkResults, onClick, onTargetClic
   )
 
   return (
-    <Popover
-      isOpen={!!isPopoverOpen}
-      positions={['bottom']}
-      content={content}
-    >
+    <Popover isOpen={!!isPopoverOpen} positions={["bottom"]} content={content}>
       <button onClick={onClick} className={styles.CheckButton}>
         Check
       </button>

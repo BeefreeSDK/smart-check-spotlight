@@ -1,24 +1,23 @@
-import { IBeeConfig } from '@beefree.io/sdk/dist/types/bee'
+import { IBeeConfig } from "@beefree.io/sdk/dist/types/bee"
 
 const getBeeConfiguration = ({
   onChange,
-  onStart,
+  onStart
 }: {
   onChange: (json: string) => void
   onStart: () => void
 }): IBeeConfig => ({
-  container: 'bee-plugin-container',
-  defaultTab: 'content',
+  container: "bee-plugin-container",
+  defaultTab: "content",
   defaultColors: [],
   disableColorHistory: true,
   disableBaseColors: false,
   workspace: {
-    hideStageToggle: false,
+    hideStageToggle: false
   },
   trackChanges: true,
   onChange,
-  onStart,
+  onStart
 })
 
 export { getBeeConfiguration }
-

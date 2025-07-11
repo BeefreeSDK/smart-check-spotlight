@@ -1,7 +1,5 @@
-import { EditorContainer } from '@/components/EditorContainer/EditorContainer'
+import { EditorContainer } from "@/components/EditorContainer/EditorContainer"
 
-const HomePage = () => (
-  <EditorContainer />
-)
+const HomePage = () => <EditorContainer />
 
 export default HomePage

@@ -1,8 +1,11 @@
 import axios, {
-  AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig,
-} from 'axios'
-import { v4 as uuidv4 } from 'uuid'
-import mem from 'mem'
+  AxiosError,
+  AxiosInstance,
+  AxiosResponse,
+  InternalAxiosRequestConfig
+} from "axios"
+import mem from "mem"
+import { v4 as uuidv4 } from "uuid"
 
 // CustomAxios Interfaces are needed by TS to manage custom props on config
 interface CustomAxiosConfig extends InternalAxiosRequestConfig {
@@ -15,11 +18,12 @@ interface CustomAxiosError extends AxiosError {
 const clientAxiosInstance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASEPATH,
   withCredentials: true,
-  headers: { 'Content-Type': 'application/json' },
-}) 
+  headers: { "Content-Type": "application/json" }
+})
 
-const loginV2Fn = async (template_type: string) => clientAxiosInstance.post('/api/auth/login', { template_type })
-const refreshTokenFn = async () => clientAxiosInstance.post('/api/auth/refresh')
+const loginV2Fn = async (template_type: string) =>
+  clientAxiosInstance.post("/api/auth/login", { template_type })
+const refreshTokenFn = async () => clientAxiosInstance.post("/api/auth/refresh")
 
 /**
  * Memorized functions prevents multiple parallel calls to bee-auth,
@@ -34,27 +38,32 @@ const bearerInterceptor = (config: any) => {
     return config
   }
 
-  const token = localStorage.getItem(process.env.NEXT_PUBLIC_BEEFREE_ACCESS_TOKEN_NAME)
+  const token = localStorage.getItem(
+    process.env.NEXT_PUBLIC_BEEFREE_ACCESS_TOKEN_NAME
+  )
   const uid = localStorage.getItem(process.env.NEXT_PUBLIC_BEEFREE_UID)
-  
+
   if (!uid) {
-    localStorage.setItem(process.env.NEXT_PUBLIC_BEEFREE_UID, `${process.env.NEXT_PUBLIC_BEEFREE_UID_PREFIX}-${uuidv4()}`)
+    localStorage.setItem(
+      process.env.NEXT_PUBLIC_BEEFREE_UID,
+      `${process.env.NEXT_PUBLIC_BEEFREE_UID_PREFIX}-${uuidv4()}`
+    )
   }
 
   return {
-  ...config,
-  headers: {
-    ...config.headers,
-    Authorization: `Bearer ${token}`,
-    uid,
-  },
+    ...config,
+    headers: {
+      ...config.headers,
+      Authorization: `Bearer ${token}`,
+      uid
+    }
   }
 }
 
 const errorInterceptor = async (error: CustomAxiosError) => {
   const { config } = error
   if (config) {
-    const template_type = config?.params?.get('template_type') ?? 'email'
+    const template_type = config?.params?.get("template_type") ?? "email"
     let result
     if (error?.response?.status === 401 && !config?.sent) {
       config.sent = true
@@ -85,6 +94,9 @@ const responseInterceptor = async (response: AxiosResponse) => {
 
 clientAxiosInstance.interceptors.request.use(bearerInterceptor)
 
-clientAxiosInstance.interceptors.response.use(responseInterceptor, errorInterceptor)
+clientAxiosInstance.interceptors.response.use(
+  responseInterceptor,
+  errorInterceptor
+)
 
 export { clientAxiosInstance }

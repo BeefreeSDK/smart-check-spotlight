@@ -1,11 +1,13 @@
-'use client'
+"use client"
 
-import React, { useEffect, useRef } from 'react'
-import BeePlugin from '@beefree.io/sdk'
-import { clientAxiosInstance } from '@/helpers/axios'
-import styles from '@/components/Editor/Editor.module.scss'
-import { IEntityContentJson, IToken } from '@beefree.io/sdk/dist/types/bee'
-import { getBeeConfiguration } from './beeConfiguration'
+import BeePlugin from "@beefree.io/sdk"
+import { IEntityContentJson, IToken } from "@beefree.io/sdk/dist/types/bee"
+import { useEffect, useRef } from "react"
+
+import styles from "@/components/Editor/Editor.module.scss"
+import { clientAxiosInstance } from "@/helpers/axios"
+
+import { getBeeConfiguration } from "./beeConfiguration"
 
 interface EditorProps {
   template: IEntityContentJson
@@ -18,7 +20,7 @@ const Editor = ({
   template,
   onInstanceCreated,
   onChange,
-  onStart,
+  onStart
 }: EditorProps) => {
   const bootstrapped = useRef(false)
   const beeConfiguration = getBeeConfiguration({ onChange, onStart })
@@ -26,25 +28,25 @@ const Editor = ({
   useEffect(() => {
     if (!bootstrapped.current && template) {
       bootstrapped.current = true
-      void clientAxiosInstance.post('api/auth/login', { template_type: 'email' })
+      void clientAxiosInstance
+        .post("api/auth/login", { template_type: "email" })
         .then(({ data }: { data: IToken }) => {
           const beeInstance = new BeePlugin(data, {
             authUrl: process.env.NEXT_PUBLIC_BEEPLUGIN_AUTH_ENDPOINT,
-            beePluginUrl: process.env.NEXT_PUBLIC_BEEPLUGIN_URL,
+            beePluginUrl: process.env.NEXT_PUBLIC_BEEPLUGIN_URL
           })
           onInstanceCreated(beeInstance)
-          void beeInstance.start(beeConfiguration, template, '', { shared: false })
+          void beeInstance.start(beeConfiguration, template, "", {
+            shared: false
+          })
         })
         .catch((error: unknown) => {
-          console.log(error)
+          console.error(error)
         })
     }
   }, [beeConfiguration, onInstanceCreated, template])
 
-  return (
-    <div id="bee-plugin-container" className={styles.BeePluginContainer} />
-  )
+  return <div id="bee-plugin-container" className={styles.BeePluginContainer} />
 }
 
 export { Editor }
-
