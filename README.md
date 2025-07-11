@@ -1,6 +1,7 @@
-# Check Api Spotlight
+# Check SDK Api Spotlight
 
 A demo spotlight session to show how the check API works.
+More details on [Beefree SDK API Overview](spotlight_overview.md).
 
 ## Getting Started
 
