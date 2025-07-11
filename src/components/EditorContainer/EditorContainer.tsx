@@ -4,15 +4,20 @@ import { Editor } from '@/components/Editor/Editor'
 import { HeaderEditor } from '@/components/EditorHeader/EditorHeader'
 import { TemplateSelector } from '@/components/TemplateSelector/TemplateSelector'
 import { useState } from 'react'
-import { IEntityContentJson } from '@beefree.io/sdk/dist/types/bee'
+import { ExecCommands, IEntityContentJson } from '@beefree.io/sdk/dist/types/bee'
 import { Loader } from '../BeeLoader/BeeLoader'
 import styles from '@/components/EditorContainer/EditorContainer.module.scss'
 import BeePlugin from '@beefree.io/sdk'
+import { clientAxiosInstance } from '@/helpers/axios'
+import { BasicCheckAPIResponse, CheckAPICategory, CheckAPIRequest, CheckAPIResponse } from '@/app/api/check/types'
+import { AxiosResponse } from 'axios'
 
 const EditorContainer = () => {
-  const [localJson, setLocalJson] = useState<IEntityContentJson | null>(null)
   const [pluginInstance, setPluginInstance] = useState<BeePlugin | null>(null)
   const [beeLoaderDone, setBeeLoaderDone] = useState(false)
+  const [localJson, setLocalJson] = useState<IEntityContentJson | null>(null)
+  const [checkResults, setCheckResults] = useState<BasicCheckAPIResponse>()
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
   const onPluginStart = () => {
     setBeeLoaderDone(true)
@@ -33,33 +38,89 @@ const EditorContainer = () => {
   }
 
   const handleOnChange = (json: string) => {
-    setLocalJson(JSON.parse(json))  
+    setLocalJson(JSON.parse(json))
   }
 
-  /* STEP 1: The env variables */
-  /* STEP 2: The api call on the backend */
-  /* STEP 3: Make a request to the Check API with a single check. */ 
-  /* STEP 4: Send the response data to a component CheckButton to render the results. */
-  /* STEP 5: Set up `onHover` handlers on suggestions and warnings. */
-  /* STEP 6: Set up `onClick` handlers on suggestions and warnings. */
-  /* STEP 7: Enable automatic checks to trigger validations as content is updated. */
+  const handleSmartCheck = async () => {
+    if (isPopoverOpen) {
+      setIsPopoverOpen(false)
+    } else {
+      setIsPopoverOpen(true)
+      if (localJson) {
+        const response = await clientAxiosInstance.post<undefined, AxiosResponse<CheckAPIResponse>, CheckAPIRequest>(
+          '/api/check', {
+            template: localJson,
+            checks: [
+              { 
+                "category": CheckAPICategory.MISSING_ALT_TEXT 
+              },
+              {
+                "category": CheckAPICategory.OVERAGE_IMAGE_WEIGHT,
+                "limit": 500,
+              },
+              {
+                "category": CheckAPICategory.MISSING_COPY_LINK,
+              },
+              {
+                "category": CheckAPICategory.MISSING_IMAGE_LINK,
+              },
+              {
+                "category": CheckAPICategory.OVERAGE_HTML_WEIGHT,
+                "limit": 5000,
+                "beautified": true
+              },
+            ]
+          }
+        )
+
+        const defaultSmartCheckResult = response.data.find(e => e.language === 'default')
+
+        if (defaultSmartCheckResult) {
+          setCheckResults(defaultSmartCheckResult)
+        }
+      }
+    }
+  }
+
+  const hoverSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string) => {
+    await editorInstance.execCommand(ExecCommands.SCROLL, { target: { uuid } })
+    await editorInstance.execCommand(ExecCommands.HIGHLIGHT, { target: { uuid } })
+  }
+
+  const selectSmartChecksTarget = async (editorInstance: BeePlugin, uuid: string, selector: string | null) => {
+    await editorInstance.execCommand(ExecCommands.SELECT, { target: { uuid } })
+    if (selector) {
+      await editorInstance.execCommand(ExecCommands.FOCUS, { target: { selector } })
+    }
+    setIsPopoverOpen(false)
+  }
 
   return (
     <div className={styles.Container}>
-      {pluginInstance && <HeaderEditor />}
-      {localJson ? (
-        <>
-          <Loader show={!beeLoaderDone} />
+      {
+        pluginInstance && (
+          <HeaderEditor
+            isPopoverOpen={isPopoverOpen}
+            onCheck={handleSmartCheck}
+            checkResults={checkResults}
+            onTargetClick={(uuid: string, key: string | null) => selectSmartChecksTarget(pluginInstance, uuid, key)}
+            onTargetHover={(uuid: string) => hoverSmartChecksTarget(pluginInstance, uuid)}
+          />
+        )
+      }
+      {
+        localJson ? (
           <Editor
             onInstanceCreated={setPluginInstance}
+            onStart={onPluginStart}
             template={localJson}
             onChange={handleOnChange}
-            onStart={onPluginStart}
           />
-        </>
-      ) : (
-        <TemplateSelector onLoadTemplate={handleLoadTemplate} />
-      )}
+        ) : (
+          <TemplateSelector onLoadTemplate={handleLoadTemplate} />
+        )
+      }
+      <Loader show={!!localJson && !beeLoaderDone} />
     </div>
   )
 }
