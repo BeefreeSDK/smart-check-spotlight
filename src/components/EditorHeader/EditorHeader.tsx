@@ -7,7 +7,7 @@ import { BasicSmartCheckResponse } from '@/app/api/check/types'
 interface HeaderEditorProps {
   isPopoverOpen: boolean
   smartCheckResults: BasicSmartCheckResponse | null
-  onSmartCheck: () => void
+  onSmartCheck?: () => void
   onTargetClick?: (uuid: string, selector: string | null) => void
   onTargetHover?: (uuid: string) => void
 }

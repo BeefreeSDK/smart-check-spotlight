@@ -55,14 +55,6 @@ const errorInterceptor = async (error: CustomAxiosError) => {
   const { config } = error
   if (config) {
     const template_type = config?.params?.get('template_type') ?? 'email'
-
-    /**
-     * config.sent props solves loop issues towards bee auth
-     * if refresh and login for some reasons still return 401 or 440
-     * error codes a loop could occur.
-     * Sent flag prevent that the same request infinitely receives
-     * its "triggering" error code: 401 -> refresh, 440 -> login
-    */
     let result
     if (error?.response?.status === 401 && !config?.sent) {
       config.sent = true

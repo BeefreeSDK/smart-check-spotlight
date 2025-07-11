@@ -5,7 +5,7 @@ import { BasicSmartCheckResponse, SmartCheckCategory, SmartChecksStatus } from "
 interface SmartCheckButtonProps {
   isPopoverOpen: boolean
   smartCheckResults: BasicSmartCheckResponse | null
-  onClick: () => void
+  onClick?: () => void
   onTargetClick?: (uuid: string, selector: string | null) => void
   onTargetHover?: (uuid: string) => void
 }
