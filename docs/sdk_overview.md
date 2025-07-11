@@ -1,21 +1,21 @@
-# Check API overview
+# SDK Check API Overview
 
-**You need the Beefree SDK API KEY**
-
-### This Spotlight is focused on Message checks on main language
+**2 notes**:
+- _This Spotlight is focused on Message checks on main language_
+- _You need the Beefree SDK API KEY_
 
 ## Beefree SDK API Endpoints
-- POST /v1/message/check   
-
-- POST /v1/page/check
-
-- POST /v1/row/check
+| | |
+| - | - | 
+| POST /v1/message/check | for emails|
+| POST /v1/page/check | for landing page |
+| POST /v1/row/check | for row |
 
 Same body:
 ```
 {
-  "checks": list of checks to perform - required,
-  "template": Beefree's json of the message, page or row - required
+  "checks": list of checks to perform - Required,
+  "template": Beefree's json of the message, page or row - Required
   "languages": list of secondary languages to evaluate - optional
 }
 ```
@@ -28,7 +28,7 @@ Just one note on secondary languages. The check works in incremental way:
 ## Available checks 
  Complete details on https://docs.beefree.io/beefree-sdk/apis/content-services-api/check
 
-| Check code          | Short description                        | Check Type | For messages | For pages | For rows | Widgets checked                    |
+| Check code          | Short description                        | Check Type | For messages | For pages | For rows | Widgets checked                   |
 | ------------------- | ---------------------------------------- | ---------- | ------------ | --------- | -------- | --------------------------------- |
 | missingAltText      | Highlight missing Alt-text in images     | warning    | x            | x         | x        | gif, image, sticker, icon, social |
 | missingImageLink    | Highlight missing link on images         | warning    | x            | x         | x        | gif, image, sticker, icon         |
@@ -38,9 +38,9 @@ Just one note on secondary languages. The check works in incremental way:
 | missingDetailsEmail | Highlight missing subject and pre header | suggestion | x            | -         | -        | -                                 |
 | missingDetailsPage  | Highlight missing description and title  | Suggestion | -            | x         | -        | -                                 |
 
-If warning and suggestion, the general status is warning.
-
 You create your list of checks!
+
+If warning and suggestion, the general status is warning.
 
 
 ## Stay tuned
