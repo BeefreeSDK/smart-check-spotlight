@@ -1,17 +1,17 @@
-### Rename this file to .env ###
+### Rename this file to .env
 
-### public envs ###
+### public envs
+
 NEXT_PUBLIC_BEEPLUGIN_URL=https://app-rsrc.getbee.io/plugin/v2/BeePlugin.js
 NEXT_PUBLIC_BEEPLUGIN_AUTH_ENDPOINT=https://auth.getbee.io/loginV2
 NEXT_PUBLIC_BEEPLUGIN_AUTH_REFRESH=https://auth.getbee.io/refresh
 NEXT_PUBLIC_CONTENT_SERVICE_API=https://api.getbee.io/v1/message/check
-NEXT_PUBLIC_BASEPATH=/
-NEXT_PUBLIC_BEEFREE_ACCESS_TOKEN_NAME=beefree-website-api-token
-NEXT_PUBLIC_BEEFREE_UID=beefree-website-uid
 
-### SDK private secrets ###
+### SDK private secrets
+
 BEEPLUGIN_AUTH_EMAIL_CLIENT_ID=
 BEEPLUGIN_AUTH_EMAIL_CLIENT_SECRET=
 
-### Content Service API private envs ###
+### Content Service API private envs
+
 CONTENT_SERVICE_API_SECRET=
