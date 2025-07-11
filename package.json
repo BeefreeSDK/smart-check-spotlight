@@ -12,7 +12,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@beefree.io/sdk": "9.0.1",
+    "@beefree.io/sdk": "9.0.2-fix-optional-url-config.0",
     "mem": "^10.0.0",
     "next": "15.3.4",
     "qs": "^6.14.0",

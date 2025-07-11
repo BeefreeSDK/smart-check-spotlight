@@ -32,7 +32,6 @@ const Editor = ({
         .post("api/auth/login", { template_type: "email" })
         .then(({ data }: { data: IToken }) => {
           const beeInstance = new BeePlugin(data, {
-            authUrl: process.env.NEXT_PUBLIC_BEEPLUGIN_AUTH_ENDPOINT,
             beePluginUrl: process.env.NEXT_PUBLIC_BEEPLUGIN_URL
           })
           onInstanceCreated(beeInstance)
